@@ -1,6 +1,7 @@
 data/
 trained_models/
 submissions/
+sofia-ml-mod/
 
 # Latex
 *.aux
