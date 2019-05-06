@@ -27,9 +27,10 @@ def get_time():
 parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', type=int, default=256, help='input batch size')
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
+parser.add_argument('--idx_split', type=int, default=0, help='which split to use')
 parser.add_argument('--n_epoch', type=int, default=100, help='number of epochs to train for')
 parser.add_argument('--st_epoch', type=int, default=0, help='if continuing training, epoch from which to continue')
-parser.add_argument('--model_type', type=str, default='MLP',  help='type of model')
+parser.add_argument('--model_type', type=str, default='MLP1',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
 parser.add_argument('--model', type=str, default=None,  help='optional reload model path')
 parser.add_argument('--criterion', type=str, default='cross_entropy',  help='name of the criterion to use')
@@ -39,15 +40,15 @@ parser.add_argument('--lr_decay_fact', type=float, default=2,  help='decay facto
 parser.add_argument('--lr_decay_freq', type=int, default=10,  help='decay frequency (in epochs) in learning rate')
 parser.add_argument('--momentum', type=float, default=0,  help='momentum (only SGD)')
 parser.add_argument('--cuda', type=int, default=0, help='set to 1 to use cuda')
-parser.add_argument('--random_state', type=int, default=0, help='random state for the split of data')
+parser.add_argument('--random_state', type=int, default=0, help='random state for split of data')
 opt = parser.parse_args()
 
 # ========================== TRAINING AND TEST DATA ========================== #
-mortgage_data = MortgageData()
-dataset_train = Mortgage(mortgage_data=mortgage_data, train=True, random_state=opt.random_state)
+mortgage_data = MortgageData(random_state=opt.random_state, other_lim=0.01)
+dataset_train = Mortgage(mortgage_data=mortgage_data, train=True, idx_split=opt.idx_split)
 loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=opt.batch_size, shuffle=True)
 
-dataset_test = Mortgage(mortgage_data=mortgage_data, train=False, random_state=opt.random_state)
+dataset_test = Mortgage(mortgage_data=mortgage_data, train=False, idx_split=opt.idx_split)
 loader_test = torch.utils.data.DataLoader(dataset_test, batch_size=opt.batch_size, shuffle=False)
 
 print('training set size %d' % len(dataset_train))
@@ -93,7 +94,7 @@ save_path = os.path.join('trained_models', opt.model_type)
 if not os.path.exists(save_path):
     os.mkdir(save_path)
 
-log_file = os.path.join(log_path, '%s_%s_%s.txt' % (opt.model_type, opt.model_name, opt.optimizer))
+log_file = os.path.join(log_path, '%s_%s_%s.txt' % (opt.model_type, opt.model_name, opt.idx_split))
 if not os.path.exists(log_file):
     with open(log_file, 'a') as log:
         log.write(str(opt) + '\n\n')
@@ -101,8 +102,8 @@ if not os.path.exists(log_file):
         log.write("train labels %s\n" % np.bincount(dataset_train.y))
         log.write("test labels %s\n\n" % np.bincount(dataset_test.y))
 
-log_train_file = "./log/%s/logs_train_%s_%s.csv" % (opt.model_type, opt.model_name, opt.optimizer)
-log_test_file = "./log/%s/logs_test_%s_%s.csv" % (opt.model_type, opt.model_name, opt.optimizer)
+log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, opt.model_name, opt.idx_split)
+log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, opt.model_name, opt.idx_split)
 
 if not os.path.exists(log_train_file): 
     df_logs_train = pd.DataFrame(columns=['model', 'random_state', 'date', 'n_epoch', 'lr', 'crit', 'optim', 'epoch', 
@@ -193,67 +194,67 @@ for epoch in range(opt.st_epoch, opt.n_epoch):
         df_logs_train = df_logs_train.append(row_train, ignore_index=True)
         df_logs_train.to_csv(log_train_file, header=True, index=False)
 
-# TEST
-st_time = time.time()
-network.eval()
-value_meter_test.reset()
-loss_test = 0
-
-with torch.no_grad():
-    for batch, (data, label) in enumerate(loader_test):
-        data = data.float()
-        if opt.cuda:
-            data, label = data.cuda(), label.cuda()
+        # TEST
+        st_time = time.time()
+        network.eval()
+        value_meter_test.reset()
+        loss_test = 0
         
-        output = network(data)
-        loss = criterion(output, label)
-        loss_test += loss
-
-        pred = output.cpu().data.numpy().argmax(axis=1)
-        label = label.cpu().data.numpy()
-        value_meter_test.update(pred, label, opt.batch_size)
-
-loss_test = float(loss_test.cpu())/n_batch_test
-dt = time.time()-st_time
-s_time = "%d min %d sec" % (dt//60, dt%60)
-
-print('='*40)
-print('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
-                                                                    value_meter_test.f1_macro, s_time))
-for i in range(opt.n_classes):
-    print('cat %d: %s' % (i, value_meter_test.sum[i]))
-print('='*40)
-
-with open(log_file, 'a') as log:
-    log.write('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
-                                                                            value_meter_test.f1_macro, s_time) + '\n')
-    for i in range(opt.n_classes):
-        log.write('cat %d: %s' % (i, value_meter_test.sum[i]) + '\n')
-
-row_test = {'model': opt.model_name, 
-            'random_state': opt.random_state,
-            'date': get_time(),
-            'n_epoch': opt.n_epoch,
-            'lr': opt.lr,
-            'crit': opt.criterion,
-            'optim': opt.optimizer,
-            'epoch': epoch+1,
-            'loss': np.round(loss_test,4), 
-            'f1_macro': np.round(value_meter_test.f1_macro,4),
-            'precision_0': np.round(value_meter_test.precisions[0],4),
-            'recall_0': np.round(value_meter_test.recalls[0],4),
-            'f1_0': np.round(value_meter_test.f1s[0],4),
-            'precision_1': np.round(value_meter_test.precisions[1],4),
-            'recall_1': np.round(value_meter_test.recalls[1],4),
-            'f1_1': np.round(value_meter_test.f1s[1],4)}
-
-for i in range(opt.n_classes):
-    for j in range(opt.n_classes):
-        row_test["pred_%d_%d" % (i, j)] = value_meter_test.sum[i][j]
-
-df_logs_test = df_logs_test.append(row_test, ignore_index=True)
-df_logs_test.to_csv(log_test_file, header=True, index=False)
-
-print("Saving net")
-torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.optimizer)))
+        with torch.no_grad():
+            for batch, (data, label) in enumerate(loader_test):
+                data = data.float()
+                if opt.cuda:
+                    data, label = data.cuda(), label.cuda()
+                
+                output = network(data)
+                loss = criterion(output, label)
+                loss_test += loss
+        
+                pred = output.cpu().data.numpy().argmax(axis=1)
+                label = label.cpu().data.numpy()
+                value_meter_test.update(pred, label, opt.batch_size)
+        
+        loss_test = float(loss_test.cpu())/n_batch_test
+        dt = time.time()-st_time
+        s_time = "%d min %d sec" % (dt//60, dt%60)
+        
+        print('='*40)
+        print('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
+                                                                            value_meter_test.f1_macro, s_time))
+        for i in range(opt.n_classes):
+            print('cat %d: %s' % (i, value_meter_test.sum[i]))
+        print('='*40)
+        
+        with open(log_file, 'a') as log:
+            log.write('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
+                                                                                    value_meter_test.f1_macro, s_time) + '\n')
+            for i in range(opt.n_classes):
+                log.write('cat %d: %s' % (i, value_meter_test.sum[i]) + '\n')
+        
+        row_test = {'model': opt.model_name, 
+                    'random_state': opt.random_state,
+                    'date': get_time(),
+                    'n_epoch': opt.n_epoch,
+                    'lr': opt.lr,
+                    'crit': opt.criterion,
+                    'optim': opt.optimizer,
+                    'epoch': epoch+1,
+                    'loss': np.round(loss_test,4), 
+                    'f1_macro': np.round(value_meter_test.f1_macro,4),
+                    'precision_0': np.round(value_meter_test.precisions[0],4),
+                    'recall_0': np.round(value_meter_test.recalls[0],4),
+                    'f1_0': np.round(value_meter_test.f1s[0],4),
+                    'precision_1': np.round(value_meter_test.precisions[1],4),
+                    'recall_1': np.round(value_meter_test.recalls[1],4),
+                    'f1_1': np.round(value_meter_test.f1s[1],4)}
+        
+        for i in range(opt.n_classes):
+            for j in range(opt.n_classes):
+                row_test["pred_%d_%d" % (i, j)] = value_meter_test.sum[i][j]
+        
+        df_logs_test = df_logs_test.append(row_test, ignore_index=True)
+        df_logs_test.to_csv(log_test_file, header=True, index=False)
+        
+        print("Saving net")
+        torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.idx_split)))
 

@@ -1,0 +1,2 @@
+model,random_state,date,n_epoch,lr,crit,optim,epoch,loss,f1_macro,pred_0_0,pred_0_1,precision_0,recall_0,f1_0,pred_1_0,pred_1_1,precision_1,recall_1,f1_1
+MLPNet3,0,2019-05-06 10:13,100,0.05,cross_entropy,adam,1,0.4914,0.4488,59,37,0.6146,0.0077,0.0151,7636,28781,0.7903,0.9987,0.8824

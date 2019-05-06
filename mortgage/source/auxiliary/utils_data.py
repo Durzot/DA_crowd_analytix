@@ -102,16 +102,17 @@ class Encoder(BaseEstimator, TransformerMixin):
                     category_other.append(cat)
             self.category_other[x] = category_other
         Xc = pd.DataFrame.copy(X)
-        for x in self.cols_onehot:
+        for i, x in enumerate(self.cols_onehot):
             Xc.loc[Xc[x].isin(self.category_other[x]), x] = 'other'
+        self.categories = [Xc[x].unique() for x in self.cols_onehot]
         self.onehotenc = OneHotEncoder(categories=self.categories)
-        self.onehotenc.fit(X[self.cols_onehot])
+        self.onehotenc.fit(Xc[self.cols_onehot])
         return self
     def transform(self, X):
         Xc = pd.DataFrame.copy(X)
         for x in self.cols_onehot:
             Xc.loc[Xc[x].isin(self.category_other[x]), x] = 'other'
-        Xdummy = self.onehotenc.transform(X[self.cols_onehot])
+        Xdummy = self.onehotenc.transform(Xc[self.cols_onehot])
         Xdummy = Xdummy.toarray()
         cols_Xdummy = ['']*Xdummy.shape[1]
         offset = 0
@@ -123,7 +124,10 @@ class Encoder(BaseEstimator, TransformerMixin):
         Xdummy = pd.DataFrame(Xdummy, columns=cols_Xdummy).astype(int)
         Xdummy.index = index=Xc.index
         for x, category in zip(self.cols_onehot, self.categories):
-            del Xdummy['%s_%s' % (x, str(category[0]))]
+            if 'other' in category:
+                del Xdummy['%s_%s' % (x, 'other')]
+            else:
+                del Xdummy['%s_%s' % (x, str(category[0]))]
         Xc = pd.concat((Xc, Xdummy), axis=1)
         return Xc
     def fit_transform(self, X, y):
