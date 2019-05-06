@@ -1,0 +1,13 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=0, lr=0.05, lr_decay_fact=2, lr_decay_freq=10, model=None, model_name='MLPNet3', model_type='MLP', momentum=0, n_classes=2, n_epoch=100, optimizer='adam', random_state=0, st_epoch=0)
+
+MLPNet3(
+  (fc1): Linear(in_features=112, out_features=16, bias=True)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (fc3): Linear(in_features=16, out_features=2, bias=True)
+)
+train labels [ 7695 28818]
+test labels [1924 7205]
+
+[train epoch 1/100] | loss 0.49644 | f1_macro 0.452 | time 1 min 26 sec
+cat 0: [103, 250]
+cat 1: [7592, 28568]

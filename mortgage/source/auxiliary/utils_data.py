@@ -85,16 +85,32 @@ class Scaler(BaseEstimator, TransformerMixin):
         return self.fit(X, y).transform(X)
     
 class Encoder(BaseEstimator, TransformerMixin):
-    def __init__(self, cols_onehot, categories, other_thresh=0.02):
+    def __init__(self, cols_onehot, categories, other_lim=0.02):
         self.cols_onehot = cols_onehot
         self.categories = categories
-        self.other_thres = other_thresh
+        self.other_lim = other_lim
     def fit(self, X, y):
+        n, _ = X.shape
+        self.category_other = {}
+        for x, category in zip(self.cols_onehot, self.categories):
+            category_other = []
+            x_counts = X[x].value_counts()
+            for cat in category:
+                if cat not in x_counts.index:
+                    category_other.append(cat)
+                elif x_counts[cat]/n < self.other_lim:
+                    category_other.append(cat)
+            self.category_other[x] = category_other
+        Xc = pd.DataFrame.copy(X)
+        for x in self.cols_onehot:
+            Xc.loc[Xc[x].isin(self.category_other[x]), x] = 'other'
         self.onehotenc = OneHotEncoder(categories=self.categories)
         self.onehotenc.fit(X[self.cols_onehot])
         return self
     def transform(self, X):
         Xc = pd.DataFrame.copy(X)
+        for x in self.cols_onehot:
+            Xc.loc[Xc[x].isin(self.category_other[x]), x] = 'other'
         Xdummy = self.onehotenc.transform(X[self.cols_onehot])
         Xdummy = Xdummy.toarray()
         cols_Xdummy = ['']*Xdummy.shape[1]
@@ -112,5 +128,3 @@ class Encoder(BaseEstimator, TransformerMixin):
         return Xc
     def fit_transform(self, X, y):
         return self.fit(X, y).transform(X)
-
-
