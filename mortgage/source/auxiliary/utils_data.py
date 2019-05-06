@@ -83,9 +83,9 @@ class Scaler(BaseEstimator, TransformerMixin):
         return Xc
     def fit_transform(self, X, y):
         return self.fit(X, y).transform(X)
-    
-class Encoder(BaseEstimator, TransformerMixin):
-    def __init__(self, cols_onehot, categories, other_lim=0.02):
+
+class HotEncoder(BaseEstimator, TransformerMixin):
+    def __init__(self, cols_onehot, categories, other_lim=0.005):
         self.cols_onehot = cols_onehot
         self.categories = categories
         self.other_lim = other_lim
@@ -129,6 +129,45 @@ class Encoder(BaseEstimator, TransformerMixin):
             else:
                 del Xdummy['%s_%s' % (x, str(category[0]))]
         Xc = pd.concat((Xc, Xdummy), axis=1)
+        return Xc
+    def fit_transform(self, X, y):
+        return self.fit(X, y).transform(X)
+    
+class LabEncoder(BaseEstimator, TransformerMixin):
+    def __init__(self, cols_cat, categories, other_lim=0.005):
+        self.cols_cat = cols_cat
+        self.categories = categories
+        self.other_lim = other_lim
+    def fit(self, X, y):
+        n, _ = X.shape
+        self.encoders = {}
+        self.category_other = {}
+        for x, category in zip(self.cols_cat, self.categories):
+            category_other = []
+            x_counts = X[x].value_counts()
+            for cat in category:
+                if cat not in x_counts.index:
+                    category_other.append(cat)
+                elif x_counts[cat]/n < self.other_lim:
+                    category_other.append(cat)
+            self.category_other[x] = category_other
+            
+        Xc = pd.DataFrame.copy(X)
+        self.categories = []
+        for i, x in enumerate(self.cols_cat):
+            Xc.loc[Xc[x].isin(self.category_other[x]), x] = 'other'
+            Xc.loc[:, x] = Xc.loc[:, x].astype(str)
+            self.categories.append(Xc[x].unique())
+            encoder = LabelEncoder()
+            encoder.fit(Xc[x])
+            self.encoders[x] = encoder
+        return self
+    def transform(self, X):
+        Xc = pd.DataFrame.copy(X)
+        for x in self.cols_cat:
+            Xc.loc[Xc[x].isin(self.category_other[x]), x] = 'other'
+            Xc.loc[:, x] = Xc.loc[:, x].astype(str)
+            Xc.loc[:, x] = self.encoders[x].transform(Xc[x])
         return Xc
     def fit_transform(self, X, y):
         return self.fit(X, y).transform(X)

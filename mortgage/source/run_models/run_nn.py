@@ -30,7 +30,7 @@ parser.add_argument('--n_classes', type=int, default=2, help='number of classes'
 parser.add_argument('--idx_split', type=int, default=0, help='which split to use')
 parser.add_argument('--n_epoch', type=int, default=100, help='number of epochs to train for')
 parser.add_argument('--st_epoch', type=int, default=0, help='if continuing training, epoch from which to continue')
-parser.add_argument('--model_type', type=str, default='MLP1',  help='type of model')
+parser.add_argument('--model_type', type=str, default='MLP_1',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
 parser.add_argument('--model', type=str, default=None,  help='optional reload model path')
 parser.add_argument('--criterion', type=str, default='cross_entropy',  help='name of the criterion to use')

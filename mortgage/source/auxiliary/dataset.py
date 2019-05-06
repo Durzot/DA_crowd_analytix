@@ -17,8 +17,11 @@ from sklearn.pipeline import Pipeline
 import torch.utils.data as data
 
 class MortgageData(object):
-    def __init__(self, train_file="./data/CAX_MortgageModeling_Train.csv", 
-                 test_file="./data/CAX_MortgageModeling_Test.csv", random_state=0, other_lim=0.01):
+    def __init__(self, train_file="./data/CAX_MortgageModeling_Train.csv", test_file="./data/CAX_MortgageModeling_Test.csv", 
+                 encoder="Hot", n_splits=5, random_state=0, other_lim=0.005):
+        self.n_splits = n_splits
+        self.random_state = random_state
+        self.other_lim = other_lim
         # Load data
         data_train = pd.read_csv(train_file) 
         data_test = pd.read_csv(test_file, usecols=lambda x: x not in ["RESULT"]) 
@@ -46,26 +49,37 @@ class MortgageData(object):
         categories = [X_all[x].unique() for x in cols_cat]
         del X_all
 
-        # Transform the data
-        self.tpipe = Pipeline([('ignore', Ignore(cols_ignore=cols_ignore)),
-                               ('preprocesser', Preprocesser(cols_num=cols_num)),
-                               ('scaler', Scaler()),
-                               ('encoder', Encoder(categories=categories, cols_onehot=cols_cat, other_lim=other_lim))])
+        if encoder=="Lab":
+            self.tpipe = Pipeline([('ignore', Ignore(cols_ignore=cols_ignore)),
+                                   ('preprocesser', Preprocesser(cols_num=cols_num)),
+                                   ('scaler', Scaler()),
+                                   ('encoder', LabEncoder(categories=categories,cols_cat=cols_cat,other_lim=other_lim))])
+        elif encoder=="Hot":
+            self.tpipe = Pipeline([('ignore', Ignore(cols_ignore=cols_ignore)),
+                                   ('preprocesser', Preprocesser(cols_num=cols_num)),
+                                   ('scaler', Scaler()),
+                                   ('encoder', HotEncoder(categories=categories,cols_onehot=cols_cat,other_lim=other_lim))])
+        else:
+            raise ValueError("Please choose between 'Hot' and 'Lab' for encoding of categorical variables.")
         
+        # Transform the data
         self.X_ttrain = self.tpipe.fit_transform(self.X_train, self.y_train)
         self.X_ttest = self.tpipe.transform(self.X_test)
         self.n_input = self.X_ttrain.shape[1]
 
-        self.strat_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=random_state)
+        self.strat_cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_state)
         self.splits = []
         for idx_train, idx_test in self.strat_cv.split(self.X_ttrain, self.y_train):
             self.splits.append((idx_train, idx_test))
 
-    def get_train(self, index):
-        idx_train, idx_test = self.splits[index]
-        X_tttrain, y_ttrain = self.X_ttrain.iloc[idx_train], self.y_train.iloc[idx_train]
-        X_tttest, y_ttest = self.X_ttrain.iloc[idx_test], self.y_train.iloc[idx_test]
-        return X_tttrain, y_ttrain, X_tttest, y_ttest
+    def get_train(self, index=None):
+        if index is None:
+            return self.X_ttrain, self.y_train
+        else:
+            idx_train, idx_test = self.splits[index]
+            X_tttrain, y_ttrain = self.X_ttrain.iloc[idx_train], self.y_train.iloc[idx_train]
+            X_tttest, y_ttest = self.X_ttrain.iloc[idx_test], self.y_train.iloc[idx_test]
+            return X_tttrain, X_tttest, y_ttrain, y_ttest
 
     def get_test(self):
         return self.X_ttest
@@ -76,7 +90,7 @@ class Mortgage(data.Dataset):
         self.train = train
         self.idx_split = idx_split
    
-        X_tttrain, y_ttrain, X_tttest, y_ttest = self.mortgage_data.get_train(idx_split)
+        X_tttrain, X_tttest, y_ttrain, y_ttest = self.mortgage_data.get_train(idx_split)
 
         if self.train:
             self.X = X_tttrain
