@@ -29,6 +29,7 @@ parser.add_argument('--n_classes', type=int, default=2, help='number of classes'
 parser.add_argument('--model_type', type=str, default='RandomForest_1',  help='type of model')
 parser.add_argument('--criterion', type=str, default='gini', help='criterion')
 parser.add_argument('--max_depth', type=int, default=15, help='max_depth')
+parser.add_argument('--max_features', type=str, default='sqrt', help='max_features')
 parser.add_argument('--random_state', type=int, default=0, help='random state for the model')
 parser.add_argument('--n_jobs', type=int, default=2, help='number of jobs gridsearch')
 parser.add_argument('--verbose', type=int, default=2, help='verbose gridsearch')
@@ -41,14 +42,14 @@ X_ttrain, y_train = mortgage_data.get_train()
 X_ttest = mortgage_data.get_test()
 # ========================== THE MODEL ========================== #
 estimator = RandomForestClassifier(criterion=opt.criterion,
+                                   max_features=opt.max_features,
                                    min_samples_leaf=1,
                                    max_leaf_nodes=None,
                                    random_state=opt.random_state,
                                    class_weight="balanced")
 
-param_grid = {"n_estimators": [25, 50, 100, 200, 400, 600, None],
-              "max_features": ['sqrt', 'log2', None],
-              "min_samples_split": [2, 5, 10, 20],
+param_grid = {"n_estimators": [25, 50, 100, 200, 400, None],
+              "min_samples_split": [2, 5, 10, 20, 50, 100],
               "bootstrap": [True, False]}
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #
@@ -63,7 +64,7 @@ if not os.path.exists(path_log):
 if not os.path.exists(path_model):
     os.mkdir(path_model)
     
-model_name = "rf_%s_%s" % (opt.criterion, opt.max_depth)
+model_name = "rf_%s_%s_%s" % (opt.criterion, opt.max_depth, opt.max_features)
 file_log = os.path.join(path_log, '%s.txt' % (model_name))
 
 # ========================== GRIDSEARCH ========================== #
