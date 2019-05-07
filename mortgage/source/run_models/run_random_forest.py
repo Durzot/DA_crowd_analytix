@@ -41,18 +41,15 @@ X_ttrain, y_train = mortgage_data.get_train()
 X_ttest = mortgage_data.get_test()
 # ========================== THE MODEL ========================== #
 estimator = RandomForestClassifier(criterion=opt.criterion,
-                                   max_depth=opt.max_depth,
-                                   random_state=opt.random_state)
+                                   min_samples_leaf=1,
+                                   max_leaf_nodes=None,
+                                   random_state=opt.random_state,
+                                   class_weight="balanced")
 
-param_grid = {"n_estimators": np.r_[10:510:10],
-              "max_features": ['auto', 'sqrt', 'log2', None],
-              "min_samples_split": np.r_[2:22:2],
+param_grid = {"n_estimators": [25, 50, 100, 200, 400, 600, None],
+              "max_features": ['sqrt', 'log2', None],
+              "min_samples_split": [2, 5, 10, 20],
               "bootstrap": [True, False]}
-
-param_grid = {"n_estimators": np.r_[10:200:20],
-              "max_features": ['sqrt', None],
-              "min_samples_split": np.r_[2:22:4],
-              "bootstrap": [True]}
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #
 path_pred  = "./predictions/%s" % opt.model_type
