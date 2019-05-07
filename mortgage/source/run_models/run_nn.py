@@ -30,6 +30,7 @@ parser.add_argument('--n_classes', type=int, default=2, help='number of classes'
 parser.add_argument('--index_split', type=int, default=0, help='which split to use')
 parser.add_argument('--n_epoch', type=int, default=100, help='number of epochs to train for')
 parser.add_argument('--st_epoch', type=int, default=0, help='if continuing training, epoch from which to continue')
+parser.add_argument('--p', type=float, default=None, help='dropout rate if applicable')
 parser.add_argument('--model_type', type=str, default='MLP_1',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
 parser.add_argument('--model', type=str, default=None,  help='optional reload model path')
@@ -62,7 +63,12 @@ n_batch_test = np.int(np.ceil(len(dataset_test)/opt.batch_size))
 n_input = mortgage_data.n_input
 
 # ========================== NETWORK AND OPTIMIZER ========================== #
-network = eval("%s(n_input=%d, n_classes=opt.n_classes)" % (opt.model_name, n_input))
+if opt.p is not None:
+    network = eval("%s(n_input=%d, n_classes=opt.n_classes, p=opt.p)" % (opt.model_name, n_input))   
+    opt.model_name = opt.model_name + "_" + str(opt.p) + "_"
+else:
+    network = eval("%s(n_input=%d, n_classes=opt.n_classes)" % (opt.model_name, n_input))
+
 network.apply(init_weight)
 network = network.float()
 
