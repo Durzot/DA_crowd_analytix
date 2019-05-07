@@ -27,7 +27,7 @@ def get_time():
 parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', type=int, default=256, help='input batch size')
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
-parser.add_argument('--idx_split', type=int, default=0, help='which split to use')
+parser.add_argument('--index_split', type=int, default=0, help='which split to use')
 parser.add_argument('--n_epoch', type=int, default=100, help='number of epochs to train for')
 parser.add_argument('--st_epoch', type=int, default=0, help='if continuing training, epoch from which to continue')
 parser.add_argument('--model_type', type=str, default='MLP_1',  help='type of model')
@@ -45,10 +45,13 @@ opt = parser.parse_args()
 
 # ========================== TRAINING AND TEST DATA ========================== #
 mortgage_data = MortgageData(random_state=opt.random_state, other_lim=0.01)
-dataset_train = Mortgage(mortgage_data=mortgage_data, train=True, idx_split=opt.idx_split)
+mortgage_data = mortgage_data.resample(index=opt.index_split)
+print("Class imbalance corrected on train index")
+
+dataset_train = Mortgage(mortgage_data=mortgage_data, train=True, index_split=opt.index_split)
 loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=opt.batch_size, shuffle=True)
 
-dataset_test = Mortgage(mortgage_data=mortgage_data, train=False, idx_split=opt.idx_split)
+dataset_test = Mortgage(mortgage_data=mortgage_data, train=False, index_split=opt.index_split)
 loader_test = torch.utils.data.DataLoader(dataset_test, batch_size=opt.batch_size, shuffle=False)
 
 print('training set size %d' % len(dataset_train))
@@ -94,7 +97,7 @@ save_path = os.path.join('trained_models', opt.model_type)
 if not os.path.exists(save_path):
     os.mkdir(save_path)
 
-log_file = os.path.join(log_path, '%s_%s_%s.txt' % (opt.model_type, opt.model_name, opt.idx_split))
+log_file = os.path.join(log_path, '%s_%s_%s.txt' % (opt.model_type, opt.model_name, opt.index_split))
 if not os.path.exists(log_file):
     with open(log_file, 'a') as log:
         log.write(str(opt) + '\n\n')
@@ -102,8 +105,8 @@ if not os.path.exists(log_file):
         log.write("train labels %s\n" % np.bincount(dataset_train.y))
         log.write("test labels %s\n\n" % np.bincount(dataset_test.y))
 
-log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, opt.model_name, opt.idx_split)
-log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, opt.model_name, opt.idx_split)
+log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, opt.model_name, opt.index_split)
+log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, opt.model_name, opt.index_split)
 
 if not os.path.exists(log_train_file): 
     df_logs_train = pd.DataFrame(columns=['model', 'random_state', 'date', 'n_epoch', 'lr', 'crit', 'optim', 'epoch', 
@@ -256,5 +259,5 @@ for epoch in range(opt.st_epoch, opt.n_epoch):
         df_logs_test.to_csv(log_test_file, header=True, index=False)
         
         print("Saving net")
-        torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.idx_split)))
+        torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.index_split)))
 

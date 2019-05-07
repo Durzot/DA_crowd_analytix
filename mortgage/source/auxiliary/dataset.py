@@ -14,6 +14,7 @@ sys.path.append("../source/")
 from auxiliary.utils_data import *
 from sklearn.model_selection import StratifiedKFold
 from sklearn.pipeline import Pipeline
+from imblearn.over_sampling import SMOTENC
 import torch.utils.data as data
 
 class MortgageData(object):
@@ -66,31 +67,57 @@ class MortgageData(object):
         self.X_ttrain = self.tpipe.fit_transform(self.X_train, self.y_train)
         self.X_ttest = self.tpipe.transform(self.X_test)
         self.n_input = self.X_ttrain.shape[1]
+            
+        # Resample for balancing data. Used only if prescribed
+        categorical_features = [x for x in self.X_ttrain.columns if any([s in x for s in cols_cat])]
+        categorical_features = [self.X_ttrain.columns.get_loc(x) for x in categorical_features]
+        self.sm = SMOTENC(categorical_features=categorical_features, 
+                          sampling_strategy='auto',
+                          random_state=random_state,
+                          k_neighbors=5,
+                          n_jobs=1)
 
         self.strat_cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_state)
         self.splits = []
         for idx_train, idx_test in self.strat_cv.split(self.X_ttrain, self.y_train):
             self.splits.append((idx_train, idx_test))
 
+    def resample(self, index=None):
+        if index is None:
+            self.X_ttrain, self.y_train = self.sm.fit_resample(self.X_ttrain, self.y_train)
+        else:
+            # Split before resampling
+            idx_train, idx_test = self.splits[index]
+            self.X_tttrain, self.y_ttrain = self.X_ttrain.iloc[idx_train], self.y_train.iloc[idx_train]
+            self.X_tttrain, self.y_ttrain = self.sm.fit_resample(self.X_tttrain, self.y_ttrain)
+            self.X_tttrain = pd.DataFrame(self.X_tttrain, columns=self.X_ttrain.columns)
+            self.y_ttrain = pd.Series(self.y_ttrain)
+            self.X_tttest, self.y_ttest = self.X_ttrain.iloc[idx_test], self.y_train.iloc[idx_test]
+        self.resampled = True
+        return self
+
     def get_train(self, index=None):
         if index is None:
             return self.X_ttrain, self.y_train
         else:
-            idx_train, idx_test = self.splits[index]
-            X_tttrain, y_ttrain = self.X_ttrain.iloc[idx_train], self.y_train.iloc[idx_train]
-            X_tttest, y_ttest = self.X_ttrain.iloc[idx_test], self.y_train.iloc[idx_test]
-            return X_tttrain, X_tttest, y_ttrain, y_ttest
+            if self.resampled:
+                return self.X_tttrain, self.X_tttest, self.y_ttrain, self.y_ttest
+            else:
+                idx_train, idx_test = self.splits[index]
+                self.X_tttrain, self.y_ttrain = self.X_ttrain.iloc[idx_train], self.y_train.iloc[idx_train]
+                self.X_tttest, self.y_ttest = self.X_ttrain.iloc[idx_test], self.y_train.iloc[idx_test]
+                return self.X_tttrain, self.X_tttest, self.y_ttrain, self.y_ttest
 
     def get_test(self):
         return self.X_ttest
 
 class Mortgage(data.Dataset):
-    def __init__(self, mortgage_data, train=True, idx_split=0):
+    def __init__(self, mortgage_data, train=True, index_split=0):
         self.mortgage_data = mortgage_data
         self.train = train
-        self.idx_split = idx_split
+        self.index_split = index_split
    
-        X_tttrain, X_tttest, y_ttrain, y_ttest = self.mortgage_data.get_train(idx_split)
+        X_tttrain, X_tttest, y_ttrain, y_ttest = self.mortgage_data.get_train(index_split)
 
         if self.train:
             self.X = X_tttrain

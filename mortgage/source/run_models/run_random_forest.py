@@ -48,7 +48,7 @@ estimator = RandomForestClassifier(criterion=opt.criterion,
                                    random_state=opt.random_state,
                                    class_weight="balanced")
 
-param_grid = {"n_estimators": [25, 50, 100, 200, 400, None],
+param_grid = {"n_estimators": [25, 50, 100, 200, 400, 600],
               "min_samples_split": [2, 5, 10, 20, 50, 100],
               "bootstrap": [True, False]}
 
