@@ -274,3 +274,21 @@ cat 1: [1357, 6185]
 [train epoch 44/100] | loss 0.43052 | f1_macro 0.787 | time 7 min 41 sec
 cat 0: [22211, 5652]
 cat 1: [6607, 23166]
+[test epoch 45/100] | loss 0.552 | f1_macro 0.587 | time 0 min 14 sec
+cat 0: [719, 1391]
+cat 1: [1205, 5814]
+[train epoch 45/100] | loss 0.42976 | f1_macro 0.787 | time 7 min 32 sec
+cat 0: [21934, 5361]
+cat 1: [6884, 23457]
+[test epoch 46/100] | loss 0.564 | f1_macro 0.586 | time 0 min 14 sec
+cat 0: [758, 1512]
+cat 1: [1166, 5693]
+[train epoch 46/100] | loss 0.43013 | f1_macro 0.787 | time 7 min 38 sec
+cat 0: [21974, 5430]
+cat 1: [6844, 23388]
+[test epoch 47/100] | loss 0.557 | f1_macro 0.585 | time 0 min 15 sec
+cat 0: [734, 1452]
+cat 1: [1190, 5753]
+[train epoch 47/100] | loss 0.43042 | f1_macro 0.787 | time 7 min 40 sec
+cat 0: [21742, 5167]
+cat 1: [7076, 23651]
