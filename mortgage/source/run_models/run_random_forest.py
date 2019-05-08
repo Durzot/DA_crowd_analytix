@@ -41,14 +41,23 @@ mortgage_data = MortgageData(encoder="Hot")
 X_ttrain, y_train = mortgage_data.get_train()
 X_ttest = mortgage_data.get_test()
 # ========================== THE MODEL ========================== #
-estimator = RandomForestClassifier(max_depth=opt.max_depth,
-                                   max_features=opt.max_features,
-                                   criterion=opt.criterion,
-                                   min_samples_leaf=1,
-                                   max_leaf_nodes=None,
-                                   random_state=opt.random_state,
-                                   class_weight="balanced")
-
+if opt.max_features=='None':
+    estimator = RandomForestClassifier(max_depth=opt.max_depth,
+                                       max_features=None,
+                                       criterion=opt.criterion,
+                                       min_samples_leaf=1,
+                                       max_leaf_nodes=None,
+                                       random_state=opt.random_state,
+                                       class_weight="balanced")
+else:
+    estimator = RandomForestClassifier(max_depth=opt.max_depth,
+                                       max_features=opt.max_features,
+                                       criterion=opt.criterion,
+                                       min_samples_leaf=1,
+                                       max_leaf_nodes=None,
+                                       random_state=opt.random_state,
+                                       class_weight="balanced")
+    
 param_grid = {"n_estimators": [50, 100, 200, 400],
               "min_samples_split": [20, 40, 60, 80],
               "bootstrap": [True, False]}
@@ -64,7 +73,7 @@ if not os.path.exists(path_log):
     os.mkdir(path_log)
 if not os.path.exists(path_model):
     os.mkdir(path_model)
-    
+
 model_name = "rf_%s_%s_%s" % (opt.criterion, opt.max_features, opt.max_depth)
 file_log = os.path.join(path_log, '%s.txt' % (model_name))
 
