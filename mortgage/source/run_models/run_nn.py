@@ -267,3 +267,5 @@ for epoch in range(opt.st_epoch, opt.n_epoch):
         print("Saving net")
         torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.index_split)))
 
+python source/run_models/run_nn.py --index_split 0 --n_epoch 100 --p 0.2 --model_name MLPNet4Drop --cuda 1
+
