@@ -1,0 +1,46 @@
+Namespace(criterion='gini', max_depth=20, max_features='sqrt', model_type='RandomForest_1', n_classes=2, n_jobs=2, random_state=0, verbose=2)
+
+================================================================================
+Best params {'bootstrap': True, 'min_samples_split': 20, 'n_estimators': 400}
+Best score 0.60896
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.7011; recall 0.8196; f1 0.7557
+Train class 1 | precision 0.9496; recall 0.9067; f1 0.9276
+Test class 0 | precision 0.373; recall 0.4054; f1 0.3885
+Test class 1 | precision 0.8375; recall 0.818; f1 0.8276
+
+
+Split [2/5]
+Train class 0 | precision 0.6964; recall 0.8263; f1 0.7558
+Train class 1 | precision 0.9512; recall 0.9038; f1 0.9269
+Test class 0 | precision 0.38; recall 0.4205; f1 0.3992
+Test class 1 | precision 0.8407; recall 0.8168; f1 0.8286
+
+
+Split [3/5]
+Train class 0 | precision 0.713; recall 0.8168; f1 0.7614
+Train class 1 | precision 0.9491; recall 0.9122; f1 0.9303
+Test class 0 | precision 0.381; recall 0.3851; f1 0.383
+Test class 1 | precision 0.8353; recall 0.8329; f1 0.8341
+
+
+Split [4/5]
+Train class 0 | precision 0.7061; recall 0.8199; f1 0.7587
+Train class 1 | precision 0.9497; recall 0.9089; f1 0.9289
+Test class 0 | precision 0.3759; recall 0.3898; f1 0.3828
+Test class 1 | precision 0.8354; recall 0.8272; f1 0.8313
+
+
+Split [5/5]
+Train class 0 | precision 0.6929; recall 0.828; f1 0.7544
+Train class 1 | precision 0.9515; recall 0.902; f1 0.9261
+Test class 0 | precision 0.3721; recall 0.4025; f1 0.3867
+Test class 1 | precision 0.837; recall 0.8187; f1 0.8277
+
+
+================================================================================
+Running time script 4703.58 sec
+================================================================================
