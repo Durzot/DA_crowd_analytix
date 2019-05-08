@@ -1,0 +1,46 @@
+Namespace(criterion='entropy', max_depth=10, max_features='sqrt', model_type='RandomForest_1', n_classes=2, n_jobs=2, random_state=0, verbose=2)
+
+================================================================================
+Best params {'bootstrap': True, 'min_samples_split': 5, 'n_estimators': 400}
+Best score 0.57037
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3514; recall 0.6973; f1 0.4673
+Train class 1 | precision 0.8904; recall 0.6563; f1 0.7556
+Test class 0 | precision 0.3116; recall 0.6216; f1 0.4151
+Test class 1 | precision 0.8624; recall 0.6333; f1 0.7303
+
+
+Split [2/5]
+Train class 0 | precision 0.347; recall 0.706; f1 0.4653
+Train class 1 | precision 0.8915; recall 0.6452; f1 0.7486
+Test class 0 | precision 0.313; recall 0.6398; f1 0.4204
+Test class 1 | precision 0.8666; recall 0.625; f1 0.7262
+
+
+Split [3/5]
+Train class 0 | precision 0.3529; recall 0.7021; f1 0.4697
+Train class 1 | precision 0.8919; recall 0.6562; f1 0.7561
+Test class 0 | precision 0.3086; recall 0.6195; f1 0.412
+Test class 1 | precision 0.861; recall 0.6293; f1 0.7271
+
+
+Split [4/5]
+Train class 0 | precision 0.3506; recall 0.6966; f1 0.4665
+Train class 1 | precision 0.89; recall 0.6556; f1 0.755
+Test class 0 | precision 0.3021; recall 0.5956; f1 0.4009
+Test class 1 | precision 0.8542; recall 0.6326; f1 0.7269
+
+
+Split [5/5]
+Train class 0 | precision 0.3475; recall 0.7061; f1 0.4658
+Train class 1 | precision 0.8917; recall 0.6459; f1 0.7492
+Test class 0 | precision 0.3123; recall 0.6422; f1 0.4202
+Test class 1 | precision 0.867; recall 0.6224; f1 0.7246
+
+
+================================================================================
+Running time script 1434.3 sec
+================================================================================
