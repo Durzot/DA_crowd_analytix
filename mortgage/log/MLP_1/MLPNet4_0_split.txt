@@ -1,0 +1,33 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, index_split=0, lr=0.01, lr_decay_fact=2, lr_decay_freq=2, model_name='MLPNet4', model_type='MLP_1', momentum=0, n_classes=2, n_epoch=4, optimizer='adam', p=None, random_state=0)
+
+MLPNet4(
+  (fc1): Linear(in_features=57, out_features=16, bias=True)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (fc3): Linear(in_features=16, out_features=16, bias=True)
+  (fc4): Linear(in_features=16, out_features=2, bias=True)
+)
+
+
+Split [1/5]
+Test class 0 | precision 0.3363; recall 0.3103; f1 0.3228
+Test class 1 | precision 0.8196; recall 0.8365; f1 0.8279
+
+
+Split [2/5]
+Test class 0 | precision 0.3709; recall 0.3742; f1 0.3726
+Test class 1 | precision 0.8325; recall 0.8305; f1 0.8315
+
+
+Split [3/5]
+Test class 0 | precision 0.3792; recall 0.3306; f1 0.3532
+Test class 1 | precision 0.8272; recall 0.8555; f1 0.8411
+
+
+Split [4/5]
+Test class 0 | precision 0.3741; recall 0.3373; f1 0.3547
+Test class 1 | precision 0.8275; recall 0.8493; f1 0.8383
+
+
+Split [5/5]
+Test class 0 | precision 0.3878; recall 0.3651; f1 0.3761
+Test class 1 | precision 0.8331; recall 0.8462; f1 0.8396

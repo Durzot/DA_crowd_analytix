@@ -1,0 +1,36 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, index_split=0, lr=0.01, lr_decay_fact=2, lr_decay_freq=2, model_name='MLPNet5', model_type='MLP_1', momentum=0, n_classes=2, n_epoch=4, optimizer='adam', p=None, random_state=0)
+
+MLPNet5(
+  (fc1): Linear(in_features=57, out_features=16, bias=True)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (fc3): Linear(in_features=16, out_features=16, bias=True)
+  (fc4): Linear(in_features=16, out_features=16, bias=True)
+  (fc5): Linear(in_features=16, out_features=2, bias=True)
+)
+train labels [28818 28818]
+test labels [1924 7205]
+
+[train epoch 1/4] | loss 0.4458 | f1_macro 0.777 | time 7 min 54 sec
+cat 0: [20186, 4126]
+cat 1: [8632, 24692]
+[test epoch 1/4] | loss 0.552 | f1_macro 0.597 | time 0 min 15 sec
+cat 0: [893, 1718]
+cat 1: [1031, 5487]
+[train epoch 2/4] | loss 0.44063 | f1_macro 0.781 | time 8 min 3 sec
+cat 0: [21310, 5114]
+cat 1: [7508, 23704]
+[test epoch 2/4] | loss 0.538 | f1_macro 0.601 | time 0 min 17 sec
+cat 0: [806, 1455]
+cat 1: [1118, 5750]
+[train epoch 3/4] | loss 0.43928 | f1_macro 0.781 | time 7 min 52 sec
+cat 0: [21178, 4956]
+cat 1: [7640, 23862]
+[test epoch 3/4] | loss 0.545 | f1_macro 0.601 | time 0 min 15 sec
+cat 0: [785, 1402]
+cat 1: [1139, 5803]
+[train epoch 4/4] | loss 0.43776 | f1_macro 0.783 | time 7 min 53 sec
+cat 0: [21673, 5348]
+cat 1: [7145, 23470]
+[test epoch 4/4] | loss 0.551 | f1_macro 0.598 | time 0 min 16 sec
+cat 0: [812, 1502]
+cat 1: [1112, 5703]

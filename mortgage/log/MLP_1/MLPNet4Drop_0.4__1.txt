@@ -1,0 +1,38 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, index_split=0, lr=0.01, lr_decay_fact=2, lr_decay_freq=2, model_name='MLPNet4Drop_0.4_', model_type='MLP_1', momentum=0, n_classes=2, n_epoch=4, optimizer='adam', p=0.4, random_state=0)
+
+MLPNet4Drop(
+  (fc1): Linear(in_features=57, out_features=16, bias=True)
+  (drop1): Dropout(p=0.4)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (drop2): Dropout(p=0.4)
+  (fc3): Linear(in_features=16, out_features=16, bias=True)
+  (drop3): Dropout(p=0.4)
+  (fc4): Linear(in_features=16, out_features=2, bias=True)
+)
+train labels [28818 28818]
+test labels [1924 7205]
+
+[train epoch 1/4] | loss 0.52342 | f1_macro 0.733 | time 7 min 57 sec
+cat 0: [19842, 6405]
+cat 1: [8976, 22413]
+[test epoch 1/4] | loss 0.555 | f1_macro 0.579 | time 0 min 15 sec
+cat 0: [555, 1006]
+cat 1: [1369, 6199]
+[train epoch 2/4] | loss 0.5207 | f1_macro 0.733 | time 8 min 5 sec
+cat 0: [19678, 6220]
+cat 1: [9140, 22598]
+[test epoch 2/4] | loss 0.559 | f1_macro 0.57 | time 0 min 14 sec
+cat 0: [479, 863]
+cat 1: [1445, 6342]
+[train epoch 3/4] | loss 0.52114 | f1_macro 0.734 | time 7 min 53 sec
+cat 0: [19735, 6191]
+cat 1: [9083, 22627]
+[test epoch 3/4] | loss 0.561 | f1_macro 0.566 | time 0 min 16 sec
+cat 0: [522, 1055]
+cat 1: [1402, 6150]
+[train epoch 4/4] | loss 0.52183 | f1_macro 0.733 | time 8 min 3 sec
+cat 0: [19945, 6471]
+cat 1: [8873, 22347]
+[test epoch 4/4] | loss 0.559 | f1_macro 0.567 | time 0 min 16 sec
+cat 0: [561, 1163]
+cat 1: [1363, 6042]
