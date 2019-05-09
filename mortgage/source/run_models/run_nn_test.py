@@ -28,7 +28,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', type=int, default=256, help='input batch size')
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
 parser.add_argument('--index_split', type=int, default=0, help='which split to use')
-parser.add_argument('--n_epoch', type=int, default=1, help='number of epochs to retrain for')
+parser.add_argument('--n_epoch', type=int, default=4, help='number of epochs to retrain for')
 parser.add_argument('--p', type=float, default=None, help='dropout rate if applicable')
 parser.add_argument('--model_type', type=str, default='MLP_1',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
@@ -42,7 +42,11 @@ parser.add_argument('--cuda', type=int, default=0, help='set to 1 to use cuda')
 parser.add_argument('--random_state', type=int, default=0, help='random state for split of data')
 opt = parser.parse_args()
 
-path_model = 'trained_models/%s/%s_%s.pth' % (opt.model_type, opt.model_name, opt.index_split)
+if opt.p is not None:
+    path_model = 'trained_models/%s/%s_%s.pth' % (opt.model_type, opt.model_name+"_"+str(opt.p)+"_", opt.index_split)
+else:
+    path_model = 'trained_models/%s/%s_%s.pth' % (opt.model_type, opt.model_name, opt.index_split)
+
 path_pred  = "./predictions/%s" % opt.model_type
 path_log = "./log/%s" % opt.model_type
 
