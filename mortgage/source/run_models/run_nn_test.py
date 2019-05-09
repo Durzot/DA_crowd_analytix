@@ -32,7 +32,6 @@ parser.add_argument('--n_epoch', type=int, default=1, help='number of epochs to 
 parser.add_argument('--p', type=float, default=None, help='dropout rate if applicable')
 parser.add_argument('--model_type', type=str, default='MLP_1',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
-parser.add_argument('--model', type=str, default=None,  help='optional reload model path')
 parser.add_argument('--criterion', type=str, default='cross_entropy',  help='name of the criterion to use')
 parser.add_argument('--optimizer', type=str, default='adam',  help='name of the optimizer to use')
 parser.add_argument('--lr', type=float, default=0.01,  help='learning rate')
@@ -82,7 +81,7 @@ else:
 
 # Log file
 log_file_split = os.path.join(path_log, '%s_%d_split.txt' % (opt.model_name, opt.index_split))
-if not os.path.exists(log_file):
+if not os.path.exists(log_file_split):
     with open(log_file_split, 'a') as log:
         log.write(str(opt) + '\n\n')
         log.write(str(network) + '\n')
@@ -238,8 +237,8 @@ for index_split in range(mortgage_data.n_splits):
             with open(log_file, 'a') as log:
                 log.write('[train epoch %d/%d] | loss %.5g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_train,
                                                                                          value_meter_train.f1_macro, s_time) +  '\n')
-            for i in range(opt.n_classes):
-                log.write('cat %d: %s' % (i, value_meter_train.sum[i]) + '\n')
+                for i in range(opt.n_classes):
+                    log.write('cat %d: %s' % (i, value_meter_train.sum[i]) + '\n')
         
             row_train = {'model': opt.model_name, 
                          'random_state': opt.random_state,
