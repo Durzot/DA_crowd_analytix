@@ -76,7 +76,8 @@ class MortgageData(object):
                           random_state=random_state,
                           k_neighbors=5,
                           n_jobs=1)
-
+        
+        self.categorical_features = categorical_features
         self.strat_cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_state)
         self.splits = []
         for idx_train, idx_test in self.strat_cv.split(self.X_ttrain, self.y_train):

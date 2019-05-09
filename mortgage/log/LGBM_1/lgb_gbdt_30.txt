@@ -1,0 +1,46 @@
+Namespace(boosting_type='gbdt', model_type='LGBM_1', n_classes=2, num_leaves=30, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 30, 'learning_rate': 0.05, 'feature_fraction': 0.7, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.62264
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.4873; recall 0.4435; f1 0.4644
+Train class 1 | precision 0.8549; recall 0.8754; f1 0.865
+Test class 0 | precision 0.5061; recall 0.4761; f1 0.4906
+Test class 1 | precision 0.8623; recall 0.8759; f1 0.869
+
+
+Split [2/5]
+Train class 0 | precision 0.4788; recall 0.4455; f1 0.4615
+Train class 1 | precision 0.8546; recall 0.8705; f1 0.8625
+Test class 0 | precision 0.5084; recall 0.4719; f1 0.4895
+Test class 1 | precision 0.8616; recall 0.8781; f1 0.8698
+
+
+Split [3/5]
+Train class 0 | precision 0.4766; recall 0.4456; f1 0.4606
+Train class 1 | precision 0.8545; recall 0.8694; f1 0.8619
+Test class 0 | precision 0.4963; recall 0.4584; f1 0.4766
+Test class 1 | precision 0.8583; recall 0.8758; f1 0.8669
+
+
+Split [4/5]
+Train class 0 | precision 0.4749; recall 0.4435; f1 0.4587
+Train class 1 | precision 0.854; recall 0.869; f1 0.8615
+Test class 0 | precision 0.489; recall 0.4491; f1 0.4682
+Test class 1 | precision 0.856; recall 0.8747; f1 0.8652
+
+
+Split [5/5]
+Train class 0 | precision 0.4936; recall 0.4582; f1 0.4752
+Train class 1 | precision 0.858; recall 0.8745; f1 0.8662
+Test class 0 | precision 0.4135; recall 0.3817; f1 0.397
+Test class 1 | precision 0.8383; recall 0.8555; f1 0.8468
+
+
+================================================================================
+Running time script 21.7022 sec
+================================================================================

@@ -179,93 +179,93 @@ for epoch in range(opt.st_epoch, opt.n_epoch):
         for i in range(opt.n_classes):
             log.write('cat %d: %s' % (i, value_meter_train.sum[i]) + '\n')
 
-        row_train = {'model': opt.model_name, 
-                     'random_state': opt.random_state,
-                     'date': get_time(),
-                     'n_epoch': opt.n_epoch,
-                     'lr': opt.lr,
-                     'crit': opt.criterion,
-                     'optim': opt.optimizer,
-                     'epoch': epoch+1,
-                     'loss': np.round(loss_train, 4),
-                     'f1_macro': np.round(value_meter_train.f1_macro, 4),
-                     'precision_0': np.round(value_meter_train.precisions[0], 4),
-                     'recall_0': np.round(value_meter_train.recalls[0], 4),
-                     'f1_0': np.round(value_meter_train.f1s[0], 4),
-                     'precision_1': np.round(value_meter_train.precisions[1], 4),
-                     'recall_1': np.round(value_meter_train.recalls[1], 4),
-                     'f1_1': np.round(value_meter_train.f1s[1], 4)}
-        
-        for i in range(opt.n_classes):
-            for j in range(opt.n_classes):
-                row_train["pred_%d_%d" % (i, j)] = value_meter_train.sum[i][j]
-        
-        df_logs_train = df_logs_train.append(row_train, ignore_index=True)
-        df_logs_train.to_csv(log_train_file, header=True, index=False)
+    row_train = {'model': opt.model_name, 
+                 'random_state': opt.random_state,
+                 'date': get_time(),
+                 'n_epoch': opt.n_epoch,
+                 'lr': opt.lr,
+                 'crit': opt.criterion,
+                 'optim': opt.optimizer,
+                 'epoch': epoch+1,
+                 'loss': np.round(loss_train, 4),
+                 'f1_macro': np.round(value_meter_train.f1_macro, 4),
+                 'precision_0': np.round(value_meter_train.precisions[0], 4),
+                 'recall_0': np.round(value_meter_train.recalls[0], 4),
+                 'f1_0': np.round(value_meter_train.f1s[0], 4),
+                 'precision_1': np.round(value_meter_train.precisions[1], 4),
+                 'recall_1': np.round(value_meter_train.recalls[1], 4),
+                 'f1_1': np.round(value_meter_train.f1s[1], 4)}
+    
+    for i in range(opt.n_classes):
+        for j in range(opt.n_classes):
+            row_train["pred_%d_%d" % (i, j)] = value_meter_train.sum[i][j]
+    
+    df_logs_train = df_logs_train.append(row_train, ignore_index=True)
+    df_logs_train.to_csv(log_train_file, header=True, index=False)
 
-        # TEST
-        st_time = time.time()
-        network.eval()
-        value_meter_test.reset()
-        loss_test = 0
-        
-        with torch.no_grad():
-            for batch, (data, label) in enumerate(loader_test):
-                data = data.float()
-                if opt.cuda:
-                    data, label = data.cuda(), label.cuda()
-                
-                output = network(data)
-                loss = criterion(output, label)
-                loss_test += loss
-        
-                pred = output.cpu().data.numpy().argmax(axis=1)
-                label = label.cpu().data.numpy()
-                value_meter_test.update(pred, label, opt.batch_size)
-        
-        loss_test = float(loss_test.cpu())/n_batch_test
-        dt = time.time()-st_time
-        s_time = "%d min %d sec" % (dt//60, dt%60)
-        
-        print('='*40)
-        print('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
-                                                                            value_meter_test.f1_macro, s_time))
+    # TEST
+    st_time = time.time()
+    network.eval()
+    value_meter_test.reset()
+    loss_test = 0
+    
+    with torch.no_grad():
+        for batch, (data, label) in enumerate(loader_test):
+            data = data.float()
+            if opt.cuda:
+                data, label = data.cuda(), label.cuda()
+            
+            output = network(data)
+            loss = criterion(output, label)
+            loss_test += loss
+    
+            pred = output.cpu().data.numpy().argmax(axis=1)
+            label = label.cpu().data.numpy()
+            value_meter_test.update(pred, label, opt.batch_size)
+    
+    loss_test = float(loss_test.cpu())/n_batch_test
+    dt = time.time()-st_time
+    s_time = "%d min %d sec" % (dt//60, dt%60)
+    
+    print('='*40)
+    print('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
+                                                                        value_meter_test.f1_macro, s_time))
+    for i in range(opt.n_classes):
+        print('cat %d: %s' % (i, value_meter_test.sum[i]))
+    print('='*40)
+    
+    with open(log_file, 'a') as log:
+        log.write('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
+                                                                                value_meter_test.f1_macro, s_time) + '\n')
         for i in range(opt.n_classes):
-            print('cat %d: %s' % (i, value_meter_test.sum[i]))
-        print('='*40)
-        
-        with open(log_file, 'a') as log:
-            log.write('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
-                                                                                    value_meter_test.f1_macro, s_time) + '\n')
-            for i in range(opt.n_classes):
-                log.write('cat %d: %s' % (i, value_meter_test.sum[i]) + '\n')
-        
-        row_test = {'model': opt.model_name, 
-                    'random_state': opt.random_state,
-                    'date': get_time(),
-                    'n_epoch': opt.n_epoch,
-                    'lr': opt.lr,
-                    'crit': opt.criterion,
-                    'optim': opt.optimizer,
-                    'epoch': epoch+1,
-                    'loss': np.round(loss_test,4), 
-                    'f1_macro': np.round(value_meter_test.f1_macro,4),
-                    'precision_0': np.round(value_meter_test.precisions[0],4),
-                    'recall_0': np.round(value_meter_test.recalls[0],4),
-                    'f1_0': np.round(value_meter_test.f1s[0],4),
-                    'precision_1': np.round(value_meter_test.precisions[1],4),
-                    'recall_1': np.round(value_meter_test.recalls[1],4),
-                    'f1_1': np.round(value_meter_test.f1s[1],4)}
-        
-        for i in range(opt.n_classes):
-            for j in range(opt.n_classes):
-                row_test["pred_%d_%d" % (i, j)] = value_meter_test.sum[i][j]
-        
-        df_logs_test = df_logs_test.append(row_test, ignore_index=True)
-        df_logs_test.to_csv(log_test_file, header=True, index=False)
-        
-        print("Saving net")
-        torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.index_split)))
+            log.write('cat %d: %s' % (i, value_meter_test.sum[i]) + '\n')
+    
+    row_test = {'model': opt.model_name, 
+                'random_state': opt.random_state,
+                'date': get_time(),
+                'n_epoch': opt.n_epoch,
+                'lr': opt.lr,
+                'crit': opt.criterion,
+                'optim': opt.optimizer,
+                'epoch': epoch+1,
+                'loss': np.round(loss_test,4), 
+                'f1_macro': np.round(value_meter_test.f1_macro,4),
+                'precision_0': np.round(value_meter_test.precisions[0],4),
+                'recall_0': np.round(value_meter_test.recalls[0],4),
+                'f1_0': np.round(value_meter_test.f1s[0],4),
+                'precision_1': np.round(value_meter_test.precisions[1],4),
+                'recall_1': np.round(value_meter_test.recalls[1],4),
+                'f1_1': np.round(value_meter_test.f1s[1],4)}
+    
+    for i in range(opt.n_classes):
+        for j in range(opt.n_classes):
+            row_test["pred_%d_%d" % (i, j)] = value_meter_test.sum[i][j]
+    
+    df_logs_test = df_logs_test.append(row_test, ignore_index=True)
+    df_logs_test.to_csv(log_test_file, header=True, index=False)
+    
+    print("Saving net")
+    torch.save(network.state_dict(), os.path.join(save_path, '%s_%s.pth' % (opt.model_name, opt.index_split)))
 
-python source/run_models/run_nn.py --index_split 0 --n_epoch 100 --p 0.2 --model_name MLPNet4Drop --cuda 1
+
 

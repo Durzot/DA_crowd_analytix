@@ -10,7 +10,7 @@ Python 3 virtual environment 3.7_pytorch_sk or base conda
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from sklearn.base import clone
 
 class Ignore(BaseEstimator, TransformerMixin):
