@@ -132,7 +132,7 @@ for index_split in range(mortgage_data.n_splits):
         df_pred_test = pd.DataFrame(np.concatenate((X_test.unique_id.values.reshape(-1,1), y_pred_test.reshape(-1,1),
                                                     output_test), axis=1))
         df_pred_test.columns = ["Unique_ID", "Prediction", "Output 0", "Output 1"]
-        df_pred_test.to_csv(os.path.join(path_pred, "%s_%d_test.csv" % (opt.model_name, index_split)))
+        df_pred_test.to_csv(os.path.join(path_pred, "%s_test.csv" % (opt.model_name)))
         y_pred_test = np.where(y_pred_test==0, "NOT FUNDED", "FUNDED")
         submission_test = pd.DataFrame({'Unique_ID': X_test['unique_id'], 'Result_Predicted': y_pred_test})
         submission_file = pd.read_csv("./data/CAX_MortgageModeling_SubmissionFormat.csv")
