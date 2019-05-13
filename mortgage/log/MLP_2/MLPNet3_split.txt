@@ -77,3 +77,19 @@ XVAL
 Split [4/5]
 Test class 0 | precision 0.292; recall 0.3479; f1 0.3175
 Test class 1 | precision 0.8165; recall 0.7748; f1 0.7951
+
+========================================
+OUT-OF_FOLD
+
+
+Split [5/5]
+Test class 0 | precision 0.2912; recall 0.5352; f1 0.3772
+Test class 1 | precision 0.8401; recall 0.6521; f1 0.7343
+
+========================================
+XVAL
+
+
+Split [5/5]
+Test class 0 | precision 0.2894; recall 0.526; f1 0.3733
+Test class 1 | precision 0.8381; recall 0.6551; f1 0.7354

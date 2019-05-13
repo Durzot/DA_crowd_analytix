@@ -1,0 +1,56 @@
+Namespace(criterion='entropy', max_depth=15, max_features='sqrt', model_type='RandomForest_2', n_classes=2, n_jobs=1, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'bootstrap': True, 'min_samples_split': 5, 'n_estimators': 400}
+Best score 0.59796
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.5399; recall 0.7691; f1 0.6345
+Train class 1 | precision 0.9305; recall 0.825; f1 0.8746
+Test class 0 | precision 0.3507; recall 0.4817; f1 0.4059
+Test class 1 | precision 0.8462; recall 0.7618; f1 0.8018
+Xval class 0 | precision 0.3409; recall 0.4809; f1 0.399
+Xval class 1 | precision 0.8443; recall 0.7517; f1 0.7953
+
+
+Split [2/5]
+Train class 0 | precision 0.5371; recall 0.7725; f1 0.6336
+Train class 1 | precision 0.9312; recall 0.8222; f1 0.8733
+Test class 0 | precision 0.3411; recall 0.482; f1 0.3995
+Test class 1 | precision 0.8446; recall 0.7515; f1 0.7953
+Xval class 0 | precision 0.3432; recall 0.492; f1 0.4043
+Xval class 1 | precision 0.8466; recall 0.7485; f1 0.7945
+
+
+Split [3/5]
+Train class 0 | precision 0.5425; recall 0.7747; f1 0.6381
+Train class 1 | precision 0.9321; recall 0.8256; f1 0.8756
+Test class 0 | precision 0.3441; recall 0.4869; f1 0.4032
+Test class 1 | precision 0.8459; recall 0.7523; f1 0.7964
+Xval class 0 | precision 0.3448; recall 0.4858; f1 0.4033
+Xval class 1 | precision 0.8459; recall 0.7535; f1 0.797
+
+
+Split [4/5]
+Train class 0 | precision 0.5388; recall 0.7687; f1 0.6335
+Train class 1 | precision 0.9303; recall 0.8243; f1 0.8741
+Test class 0 | precision 0.3413; recall 0.474; f1 0.3968
+Test class 1 | precision 0.8433; recall 0.7557; f1 0.7971
+Xval class 0 | precision 0.3415; recall 0.4858; f1 0.401
+Xval class 1 | precision 0.8452; recall 0.7498; f1 0.7947
+
+
+Split [5/5]
+Train class 0 | precision 0.5394; recall 0.7739; f1 0.6357
+Train class 1 | precision 0.9317; recall 0.8236; f1 0.8743
+Test class 0 | precision 0.3333; recall 0.4807; f1 0.3937
+Test class 1 | precision 0.8428; recall 0.7433; f1 0.7899
+Xval class 0 | precision 0.3457; recall 0.499; f1 0.4084
+Xval class 1 | precision 0.8482; recall 0.7478; f1 0.7948
+
+
+================================================================================
+Running time script 2567.46 sec
+================================================================================

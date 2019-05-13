@@ -10,3 +10,39 @@ MLPNet3Drop(
 train labels [24496 24496]
 test labels [1635 6123]
 
+[train epoch 1/6] | loss 0.72596 | f1_macro 0.502 | time 3 min 14 sec
+cat 0: [8580, 7793]
+cat 1: [15916, 16703]
+[test epoch 1/6] | loss 0.683 | f1_macro 0.469 | time 0 min 10 sec
+cat 0: [874, 3015]
+cat 1: [761, 3108]
+[train epoch 2/6] | loss 0.68302 | f1_macro 0.561 | time 3 min 42 sec
+cat 0: [15137, 12071]
+cat 1: [9359, 12425]
+[test epoch 2/6] | loss 0.674 | f1_macro 0.492 | time 0 min 5 sec
+cat 0: [966, 2950]
+cat 1: [669, 3173]
+[train epoch 3/6] | loss 0.6723 | f1_macro 0.585 | time 4 min 3 sec
+cat 0: [15840, 11620]
+cat 1: [8656, 12876]
+[test epoch 3/6] | loss 0.667 | f1_macro 0.507 | time 0 min 10 sec
+cat 0: [969, 2813]
+cat 1: [666, 3310]
+[train epoch 4/6] | loss 0.66366 | f1_macro 0.599 | time 3 min 18 sec
+cat 0: [16296, 11352]
+cat 1: [8200, 13144]
+[test epoch 4/6] | loss 0.661 | f1_macro 0.513 | time 0 min 6 sec
+cat 0: [973, 2752]
+cat 1: [662, 3371]
+[train epoch 5/6] | loss 0.65744 | f1_macro 0.609 | time 6 min 38 sec
+cat 0: [16450, 11048]
+cat 1: [8046, 13448]
+[test epoch 5/6] | loss 0.658 | f1_macro 0.516 | time 0 min 16 sec
+cat 0: [964, 2705]
+cat 1: [671, 3418]
+[train epoch 6/6] | loss 0.65464 | f1_macro 0.613 | time 6 min 56 sec
+cat 0: [16689, 11081]
+cat 1: [7807, 13415]
+[test epoch 6/6] | loss 0.654 | f1_macro 0.521 | time 0 min 15 sec
+cat 0: [957, 2641]
+cat 1: [678, 3482]
