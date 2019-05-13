@@ -14,7 +14,7 @@ import pandas as pd
 import warnings
 import time
 
-sys.path.append("./source")
+sys.path.append("./source_2")
 from auxiliary.utils_data import *
 from auxiliary.utils_model import *
 from auxiliary.dataset import *
@@ -26,7 +26,8 @@ from sklearn.externals import joblib
 # =========================== PARAMETERS =========================== # 
 parser = argparse.ArgumentParser()
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
-parser.add_argument('--model_type', type=str, default='RandomForest_1',  help='type of model')
+parser.add_argument('--other_lim', type=float, default=0.005, help='threshold for categories gathering')
+parser.add_argument('--model_type', type=str, default='RandomForest_2',  help='type of model')
 parser.add_argument('--criterion', type=str, default='gini', help='criterion')
 parser.add_argument('--max_depth', type=int, default=15, help='max_depth')
 parser.add_argument('--max_features', type=str, default='sqrt', help='max_features')
@@ -37,9 +38,18 @@ opt = parser.parse_args()
 st_time = time.time()
 
 # ========================== TRAINING AND TEST DATA ========================== #
-mortgage_data = MortgageData(encoder="Hot")
+mortgage_data = MortgageData(other_lim=opt.other_lim)
+mortgage_data = mortgage_data.split(resample=False)
+
+# Training set in X_train
 X_ttrain, y_train = mortgage_data.get_train()
+
+# Test set X_xval
+X_txval, y_xval = mortgage_data.get_xval()
+
+# Test set pred
 X_ttest = mortgage_data.get_test()
+
 # ========================== THE MODEL ========================== #
 if opt.max_features=='None':
     estimator = RandomForestClassifier(max_depth=opt.max_depth,
@@ -58,8 +68,8 @@ else:
                                        random_state=opt.random_state,
                                        class_weight="balanced")
     
-param_grid = {"n_estimators": [50, 100, 200, 400],
-              "min_samples_split": [5, 10, 20, 40, 60],
+param_grid = {"n_estimators": [100, 200, 400],
+              "min_samples_split": [5, 20, 60],
               "bootstrap": [True, False]}
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #
@@ -116,6 +126,7 @@ with open(file_log, 'a') as log:
         # Evaluate the score and save cr
         y_pred_train = best_estimator.predict(X_ttrain.iloc[idx_train])
         y_pred_test = best_estimator.predict(X_ttrain.iloc[idx_test])
+        y_pred_xval = best_estimator.predict(X_txval) 
 
         log.write("\n\nSplit [%d/%d]\n" % (i+1, mortgage_data.n_splits))
         recalls, precisions, f1s = f1_macro(y_pred_train, y_train.iloc[idx_train])
@@ -126,7 +137,11 @@ with open(file_log, 'a') as log:
         for k in recalls.keys():
             print("Test class %d | precision %.4g; recall %.4g; f1 %.4g" % (k, recalls[k], precisions[k], f1s[k]))
             log.write("Test class %d | precision %.4g; recall %.4g; f1 %.4g\n" % (k, recalls[k], precisions[k], f1s[k]))
-        
+        recalls, precisions, f1s = f1_macro(y_pred_xval, y_xval)
+        for k in recalls.keys():
+            print("Xval class %d | precision %.4g; recall %.4g; f1 %.4g" % (k, recalls[k], precisions[k], f1s[k]))
+            log.write("Xval class %d | precision %.4g; recall %.4g; f1 %.4g\n" % (k, recalls[k], precisions[k], f1s[k]))
+
         # Save the estimator on the split
         joblib.dump(best_estimator, os.path.join(path_model, '%s_split_%d.pkl' % (model_name, i+1)))
 
@@ -135,6 +150,7 @@ with open(file_log, 'a') as log:
         df_pred_test = pd.DataFrame(np.concatenate((idx_test.reshape(-1,1), y_pred_test.reshape(-1,1), y_pred_test_proba), axis=1))
         df_pred_test.columns = ["Index test", "Prediction", "Proba class 0", "Proba class 1"]
         df_pred_test.to_csv(os.path.join(path_pred, "%s_split_%d.csv" % (model_name, i+1)))
+
         print("Finished!\n")
 
 # ===================== REFIT AND PREDICT ON TEST =========================== #
@@ -143,6 +159,16 @@ print("Predicting on the test set...")
 # Refit on the complete train set
 best_estimator.fit(X_ttrain, y_train)
 X_test = mortgage_data.X_test
+
+
+# Save prediction on xval
+index_xval = X_txval.index.values
+y_pred_xval = best_estimator.predict(X_txval)
+y_pred_xval_proba = best_estimator.predict_proba(X_txval)
+df_pred_xval = pd.DataFrame(np.concatenate((index_xval.reshape(-1,1), y_pred_xval.reshape(-1,1), y_pred_xval_proba),
+                                           axis=1))
+df_pred_xval.columns = ["Index xval", "Prediction", "Proba class 0", "Proba class 1"]
+df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval.csv" % (model_name)))
 
 # Save prediction on test 
 y_pred_test = best_estimator.predict(X_ttest)
