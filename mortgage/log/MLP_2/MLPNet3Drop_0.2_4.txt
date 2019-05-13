@@ -1,0 +1,12 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, dropout_rate=0.2, lr=0.0001953125, lr_decay_fact=2, lr_decay_freq=2, model_name='MLPNet3Drop_0.2', model_type='MLP_2', momentum=0, n_classes=2, n_epoch=6, optimizer='adam', other_lim=0.005, random_state=0)
+
+MLPNet3Drop(
+  (fc1): Linear(in_features=61, out_features=16, bias=True)
+  (drop1): Dropout(p=0.2)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (drop2): Dropout(p=0.2)
+  (fc3): Linear(in_features=16, out_features=2, bias=True)
+)
+train labels [24496 24496]
+test labels [1635 6123]
+

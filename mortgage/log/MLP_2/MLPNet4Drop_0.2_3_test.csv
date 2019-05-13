@@ -1,0 +1,4 @@
+model,random_state,date,n_epoch,lr,crit,optim,epoch,loss,f1_macro,pred_0_0,pred_0_1,precision_0,recall_0,f1_0,pred_1_0,pred_1_1,precision_1,recall_1,f1_1
+MLPNet4Drop_0.2,0,2019-05-13 19:32,6,0.00078125,cross_entropy,adam,1,0.6355,0.5565,856,2082,0.2914,0.5235,0.3744,779,4042,0.8384,0.66,0.7386
+MLPNet4Drop_0.2,0,2019-05-13 19:37,6,0.00078125,cross_entropy,adam,2,0.5979,0.5685,643,1454,0.3066,0.3933,0.3446,992,4670,0.8248,0.7626,0.7925
+MLPNet4Drop_0.2,0,2019-05-13 19:41,6,0.000390625,cross_entropy,adam,3,0.5951,0.5664,580,1305,0.3077,0.3547,0.3295,1055,4819,0.8204,0.7869,0.8033
