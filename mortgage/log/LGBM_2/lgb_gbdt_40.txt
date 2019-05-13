@@ -1,0 +1,551 @@
+Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.48806
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.4354; recall 0.6367; f1 0.5172
+Train class 1 | precision 0.8893; recall 0.7796; f1 0.8309
+Test class 0 | precision 0.4767; recall 0.6938; f1 0.5651
+Test class 1 | precision 0.9069; recall 0.7965; f1 0.8481
+Xval class 0 | precision 0.377; recall 0.5405; f1 0.4442
+Xval class 1 | precision 0.8612; recall 0.7615; f1 0.8083
+
+
+Split [2/5]
+Train class 0 | precision 0.4347; recall 0.6424; f1 0.5185
+Train class 1 | precision 0.8905; recall 0.7769; f1 0.8298
+Test class 0 | precision 0.4621; recall 0.6599; f1 0.5436
+Test class 1 | precision 0.8975; recall 0.7949; f1 0.8431
+Xval class 0 | precision 0.3778; recall 0.5461; f1 0.4466
+Xval class 1 | precision 0.8624; recall 0.7598; f1 0.8079
+
+
+Split [3/5]
+Train class 0 | precision 0.4334; recall 0.6312; f1 0.5139
+Train class 1 | precision 0.8879; recall 0.7796; f1 0.8302
+Test class 0 | precision 0.4597; recall 0.6936; f1 0.5529
+Test class 1 | precision 0.9053; recall 0.7823; f1 0.8393
+Xval class 0 | precision 0.3773; recall 0.5454; f1 0.446
+Xval class 1 | precision 0.8622; recall 0.7596; f1 0.8077
+
+
+Split [4/5]
+Train class 0 | precision 0.4361; recall 0.6369; f1 0.5177
+Train class 1 | precision 0.8895; recall 0.7801; f1 0.8312
+Test class 0 | precision 0.4519; recall 0.6471; f1 0.5322
+Test class 1 | precision 0.8935; recall 0.7905; f1 0.8388
+Xval class 0 | precision 0.3765; recall 0.5398; f1 0.4436
+Xval class 1 | precision 0.861; recall 0.7613; f1 0.8081
+
+
+Split [5/5]
+Train class 0 | precision 0.4601; recall 0.6618; f1 0.5428
+Train class 1 | precision 0.8977; recall 0.7926; f1 0.8419
+Test class 0 | precision 0.3578; recall 0.5242; f1 0.4253
+Test class 1 | precision 0.8549; recall 0.7488; f1 0.7984
+Xval class 0 | precision 0.3763; recall 0.5364; f1 0.4423
+Xval class 1 | precision 0.8603; recall 0.7626; f1 0.8085
+
+
+================================================================================
+Running time script 93.505 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49563
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3905; recall 0.5249; f1 0.4479
+Train class 1 | precision 0.8603; recall 0.7813; f1 0.8189
+Test class 0 | precision 0.4067; recall 0.53; f1 0.4602
+Test class 1 | precision 0.8634; recall 0.7934; f1 0.8269
+Xval class 0 | precision 0.3636; recall 0.4796; f1 0.4136
+Xval class 1 | precision 0.8481; recall 0.7759; f1 0.8104
+
+
+Split [2/5]
+Train class 0 | precision 0.3805; recall 0.5374; f1 0.4455
+Train class 1 | precision 0.8612; recall 0.7663; f1 0.811
+Test class 0 | precision 0.3971; recall 0.5431; f1 0.4588
+Test class 1 | precision 0.8647; recall 0.7799; f1 0.8201
+Xval class 0 | precision 0.3601; recall 0.4969; f1 0.4176
+Xval class 1 | precision 0.8505; recall 0.7642; f1 0.8051
+
+
+Split [3/5]
+Train class 0 | precision 0.3746; recall 0.538; f1 0.4416
+Train class 1 | precision 0.8604; recall 0.7601; f1 0.8071
+Test class 0 | precision 0.3924; recall 0.5798; f1 0.468
+Test class 1 | precision 0.8714; recall 0.7603; f1 0.8121
+Xval class 0 | precision 0.3583; recall 0.5114; f1 0.4214
+Xval class 1 | precision 0.8527; recall 0.7554; f1 0.8011
+
+
+Split [4/5]
+Train class 0 | precision 0.3745; recall 0.5519; f1 0.4462
+Train class 1 | precision 0.863; recall 0.7539; f1 0.8048
+Test class 0 | precision 0.3767; recall 0.5523; f1 0.4479
+Test class 1 | precision 0.8635; recall 0.756; f1 0.8062
+Xval class 0 | precision 0.3548; recall 0.5198; f1 0.4217
+Xval class 1 | precision 0.8536; recall 0.7476; f1 0.7971
+
+
+Split [5/5]
+Train class 0 | precision 0.3816; recall 0.5655; f1 0.4557
+Train class 1 | precision 0.8668; recall 0.7553; f1 0.8072
+Test class 0 | precision 0.3372; recall 0.5125; f1 0.4068
+Test class 1 | precision 0.8489; recall 0.731; f1 0.7855
+Xval class 0 | precision 0.3513; recall 0.5239; f1 0.4206
+Xval class 1 | precision 0.8537; recall 0.7417; f1 0.7937
+
+
+================================================================================
+Running time script 14.6473 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 12.5185 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 13.1345 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 12.6517 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 18.5744 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 22.0333 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 19.265 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.49739
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 21.3763 sec
+================================================================================Namespace(boosting_type='gbdt', model_type='LGBM_2', n_classes=2, num_leaves=40, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 40, 'learning_rate': 0.05, 'feature_fraction': 0.6, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.61402
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.3989; recall 0.4474; f1 0.4218
+Train class 1 | precision 0.8475; recall 0.82; f1 0.8335
+Test class 0 | precision 0.4203; recall 0.4548; f1 0.4369
+Test class 1 | precision 0.8511; recall 0.8325; f1 0.8417
+Xval class 0 | precision 0.3763; recall 0.4151; f1 0.3947
+Xval class 1 | precision 0.8394; recall 0.8162; f1 0.8277
+
+
+Split [2/5]
+Train class 0 | precision 0.3881; recall 0.4726; f1 0.4262
+Train class 1 | precision 0.8505; recall 0.801; f1 0.825
+Test class 0 | precision 0.4057; recall 0.4697; f1 0.4354
+Test class 1 | precision 0.8522; recall 0.8163; f1 0.8339
+Xval class 0 | precision 0.3625; recall 0.4359; f1 0.3958
+Xval class 1 | precision 0.8408; recall 0.7953; f1 0.8174
+
+
+Split [3/5]
+Train class 0 | precision 0.3821; recall 0.4834; f1 0.4268
+Train class 1 | precision 0.8515; recall 0.7913; f1 0.8203
+Test class 0 | precision 0.3849; recall 0.5003; f1 0.4351
+Test class 1 | precision 0.855; recall 0.7866; f1 0.8194
+Xval class 0 | precision 0.3559; recall 0.4546; f1 0.3993
+Xval class 1 | precision 0.8427; recall 0.7803; f1 0.8103
+
+
+Split [4/5]
+Train class 0 | precision 0.3754; recall 0.4958; f1 0.4273
+Train class 1 | precision 0.8527; recall 0.7797; f1 0.8146
+Test class 0 | precision 0.3766; recall 0.4985; f1 0.4291
+Test class 1 | precision 0.8534; recall 0.7797; f1 0.8149
+Xval class 0 | precision 0.352; recall 0.4664; f1 0.4012
+Xval class 1 | precision 0.844; recall 0.7707; f1 0.8057
+
+
+Split [5/5]
+Train class 0 | precision 0.3783; recall 0.5115; f1 0.4349
+Train class 1 | precision 0.856; recall 0.7755; f1 0.8138
+Test class 0 | precision 0.3436; recall 0.4844; f1 0.402
+Test class 1 | precision 0.8454; recall 0.7529; f1 0.7965
+Xval class 0 | precision 0.3486; recall 0.4747; f1 0.402
+Xval class 1 | precision 0.8447; recall 0.7631; f1 0.8019
+
+
+================================================================================
+Running time script 12.7049 sec
+================================================================================
