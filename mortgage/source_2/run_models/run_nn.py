@@ -49,7 +49,7 @@ n_splits = mortgage_data.n_splits
 
 if opt.dropout_rate is not None:
     network = eval("%s(n_input=%d, n_classes=opt.n_classes, p=opt.dropout_rate)" % (opt.model_name, n_input))   
-    opt.model_name = opt.model_name + "_" + str(opt.p)
+    opt.model_name = opt.model_name + "_" + str(opt.droput_rate)
 else:
     network = eval("%s(n_input=%d, n_classes=opt.n_classes)" % (opt.model_name, n_input))
 
