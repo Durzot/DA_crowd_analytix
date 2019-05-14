@@ -20,17 +20,14 @@ from auxiliary.utils_model import *
 from auxiliary.dataset import *
 
 from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
 from sklearn.externals import joblib
 
 # =========================== PARAMETERS =========================== # 
 parser = argparse.ArgumentParser()
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
 parser.add_argument('--other_lim', type=float, default=0.005, help='threshold for categories gathering')
-parser.add_argument('--model_type', type=str, default='RandomForest_2',  help='type of model')
-parser.add_argument('--criterion', type=str, default='gini', help='criterion')
-parser.add_argument('--max_depth', type=int, default=15, help='max_depth')
-parser.add_argument('--max_features', type=str, default='sqrt', help='max_features')
+parser.add_argument('--model_type', type=str, default='Bayes_2',  help='type of model')
 parser.add_argument('--random_state', type=int, default=0, help='random state for the model')
 parser.add_argument('--n_jobs', type=int, default=2, help='number of jobs gridsearch')
 parser.add_argument('--verbose', type=int, default=2, help='verbose gridsearch')
@@ -51,26 +48,7 @@ X_txval, y_xval = mortgage_data.get_xval()
 X_ttest = mortgage_data.get_test()
 
 # ========================== THE MODEL ========================== #
-if opt.max_features=='None':
-    estimator = RandomForestClassifier(max_depth=opt.max_depth,
-                                       max_features=None,
-                                       criterion=opt.criterion,
-                                       min_samples_leaf=1,
-                                       max_leaf_nodes=None,
-                                       random_state=opt.random_state,
-                                       class_weight="balanced")
-else:
-    estimator = RandomForestClassifier(max_depth=opt.max_depth,
-                                       max_features=opt.max_features,
-                                       criterion=opt.criterion,
-                                       min_samples_leaf=1,
-                                       max_leaf_nodes=None,
-                                       random_state=opt.random_state,
-                                       class_weight="balanced")
-    
-param_grid = {"n_estimators": [100, 200, 400],
-              "min_samples_split": [5, 20, 60],
-              "bootstrap": [True, False]}
+best_estimator = GaussianNB()
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #
 path_pred  = "./predictions/%s" % opt.model_type
@@ -84,38 +62,13 @@ if not os.path.exists(path_log):
 if not os.path.exists(path_model):
     os.mkdir(path_model)
 
-model_name = "rf_%s_%s_%s" % (opt.criterion, opt.max_features, opt.max_depth)
+model_name = "bayes_gaussian" 
 file_log = os.path.join(path_log, '%s.txt' % (model_name))
 
-# ========================== GRIDSEARCH ========================== #
-grid = GridSearchCV(estimator=estimator,
-                    param_grid=param_grid,
-                    scoring='f1_macro', 
-                    cv=mortgage_data.strat_cv,
-                    return_train_score=True,
-                    verbose=opt.verbose,
-                    n_jobs=opt.n_jobs)
-
-grid = grid.fit(X_ttrain, y_train)
-best_estimator = grid.best_estimator_
-
-# Save the result of the gridsearch
-joblib.dump(grid, os.path.join(path_model, '%s_grid.pkl' % model_name))
-
 # ===================== FILL LOG AND SAVE =========================== # 
-print("="*80)
-print("Best params %s\n" % grid.best_params_)
-print("Best score %.5g" % grid.best_score_)
-print("="*80)
 
 with open(file_log, 'a') as log:
     log.write(str(opt) + '\n\n')
-    log.write("="*80)
-    log.write('\n')
-    log.write("Best params %s\n" % grid.best_params_)
-    log.write("Best score %.5g\n" % grid.best_score_)
-    log.write("="*80)
-    log.write('\n')
 
     for i, (idx_train, idx_test) in enumerate(mortgage_data.splits):
         print("Predicting on split [%d/%d] ..." % (i+1, mortgage_data.n_splits))
@@ -191,4 +144,5 @@ with open(file_log, 'a') as log:
 
 print("Finished!\n")
 print("Running time script %.5g sec" % (time.time()-st_time))
+
 

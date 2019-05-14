@@ -150,8 +150,8 @@ param_grid = {'boosting_type': [opt.boosting_type],
               'metric': ['binary_logloss'],
               'num_leaves': [opt.num_leaves],
               'learning_rate': [0.05],
-              'feature_fraction': [0.5, 0.6, 0.7, 0.8, 0.9],
-              'bagging_fraction': [0.5, 0.6, 0.7, 0.8, 0.9],
+              'feature_fraction': [0.5, 0.6, 0.7, 0.8, 0.9, 0.95],
+              'bagging_fraction': [0.9],
               'bagging_freq': [5],
               'num_boost_round': [500],
               'early_stopping_rounds': [25],
@@ -182,7 +182,6 @@ grid = GBMGridSearch(cols_cat=cols_cat,
                      model_name=model_name)
 
 grid = grid.fit(X_ttrain, y_train)
-best_estimator = grid.best_estimator_
 
 # Save the result of the gridsearch
 joblib.dump(grid, os.path.join(path_model, '%s_grid.pkl' % model_name))
@@ -206,7 +205,18 @@ with open(file_log, 'a') as log:
         print("Predicting on split [%d/%d] ..." % (i+1, mortgage_data.n_splits))
 
         # Fit the estimator with best parameters on the split
-        best_estimator = best_estimator.refit(X_ttrain.iloc[idx_train], y_train.iloc[idx_train])
+        lgb_train = lgb.Dataset(X_ttrain.iloc[idx_train], y_train.iloc[idx_train], feature_name='auto', 
+                                categorical_feature=cols_cat, free_raw_data=False)
+        lgb_test = lgb.Dataset(X_ttrain.iloc[idx_test], y_train.iloc[idx_test], feature_name='auto', 
+                               categorical_feature=cols_cat, free_raw_data=False)
+
+        best_estimator = lgb.train(grid.best_params_,
+                                   lgb_train,
+                                   feval=f1_macro_eval,
+                                   valid_sets=[lgb_test],
+                                   valid_names=['test'],
+                                   verbose_eval=False)
+
 
         # Evaluate the score and save cr
         y_pred_train = np.where(best_estimator.predict(X_ttrain.iloc[idx_train]) > 0.75, 1, 0)
@@ -229,6 +239,7 @@ with open(file_log, 'a') as log:
         
         # Save the estimator on the split
         joblib.dump(best_estimator, os.path.join(path_model, '%s_split_%d.pkl' % (model_name, i+1)))
+        del best_estimator
 
         # Save prediction on out-of-fold split
         y_pred_test_proba = best_estimator.predict(X_ttrain.iloc[idx_test])
@@ -241,8 +252,22 @@ with open(file_log, 'a') as log:
 # ===================== REFIT AND PREDICT ON TEST =========================== #
 print("Predicting on the test set...")
 
-# Refit on the complete train set
-best_estimator = best_estimator.refit(X_ttrain, y_train)
+# Fit the estimator with best parameters on the split
+lgb_train = lgb.Dataset(X_ttrain, y_train, feature_name='auto', 
+                        categorical_feature=cols_cat, free_raw_data=False)
+lgb_xval = lgb.Dataset(X_txval, y_xval, feature_name='auto', 
+                       categorical_feature=cols_cat, free_raw_data=False)
+
+best_estimator = lgb.train(grid.best_params_,
+                           lgb_train,
+                           feval=f1_macro_eval,
+                           valid_sets=[lgb_xval],
+                           valid_names=['xval'],
+                           verbose_eval=False)
+
+# Save the estimator used to predict
+joblib.dump(best_estimator, os.path.join(path_model, '%s.pkl' % model_name))
+
 X_test = mortgage_data.X_test
 
 # Save prediction on xval

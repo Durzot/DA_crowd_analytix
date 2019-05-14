@@ -1,0 +1,52 @@
+Namespace(model_type='Bayes_2', n_classes=2, n_jobs=2, other_lim=0.005, random_state=0, verbose=2)
+
+
+
+Split [1/5]
+Train class 0 | precision 0.2259; recall 0.9971; f1 0.3683
+Train class 1 | precision 0.9912; recall 0.08773; f1 0.1612
+Test class 0 | precision 0.2254; recall 0.9976; f1 0.3677
+Test class 1 | precision 0.9923; recall 0.0841; f1 0.1551
+Xval class 0 | precision 0.2254; recall 0.9924; f1 0.3674
+Xval class 1 | precision 0.9777; recall 0.08938; f1 0.1638
+
+
+Split [2/5]
+Train class 0 | precision 0.2258; recall 0.9969; f1 0.3682
+Train class 1 | precision 0.9907; recall 0.08732; f1 0.1605
+Test class 0 | precision 0.2262; recall 0.9976; f1 0.3688
+Test class 1 | precision 0.9927; recall 0.08916; f1 0.1636
+Xval class 0 | precision 0.2257; recall 0.9924; f1 0.3677
+Xval class 1 | precision 0.9781; recall 0.09086; f1 0.1663
+
+
+Split [3/5]
+Train class 0 | precision 0.2257; recall 0.9974; f1 0.3681
+Train class 1 | precision 0.992; recall 0.08622; f1 0.1587
+Test class 0 | precision 0.226; recall 0.9963; f1 0.3684
+Test class 1 | precision 0.9891; recall 0.08883; f1 0.163
+Xval class 0 | precision 0.2255; recall 0.9931; f1 0.3675
+Xval class 1 | precision 0.9796; recall 0.08901; f1 0.1632
+
+
+Split [4/5]
+Train class 0 | precision 0.2261; recall 0.9976; f1 0.3686
+Train class 1 | precision 0.9926; recall 0.08798; f1 0.1616
+Test class 0 | precision 0.2246; recall 0.9957; f1 0.3665
+Test class 1 | precision 0.9862; recall 0.08197; f1 0.1514
+Xval class 0 | precision 0.2255; recall 0.9931; f1 0.3675
+Xval class 1 | precision 0.9797; recall 0.08919; f1 0.1635
+
+
+Split [5/5]
+Train class 0 | precision 0.2256; recall 0.9966; f1 0.3679
+Train class 1 | precision 0.9897; recall 0.08659; f1 0.1592
+Test class 0 | precision 0.2267; recall 0.9982; f1 0.3695
+Test class 1 | precision 0.9946; recall 0.09081; f1 0.1664
+Xval class 0 | precision 0.2254; recall 0.9924; f1 0.3674
+Xval class 1 | precision 0.9778; recall 0.08956; f1 0.1641
+
+
+================================================================================
+Running time script 43.3063 sec
+================================================================================

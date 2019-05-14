@@ -104,7 +104,7 @@ for index_split in range(n_splits):
     network = network.float()
 
     # =================== LOAD THE DATA  =================== #
-    mortgage_data = MortgageData(other_lim=opt.other_lim)
+    mortgage_data = MortgageData(other_lim=opt.other_lim, encoder="Hot")
     mortgage_data = mortgage_data.split(resample=True, index=index_split)
     print("Class imbalance corrected on train index")
 
