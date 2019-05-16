@@ -1,0 +1,56 @@
+Namespace(boosting_type='gbdt', model_type='LGBM_3', n_classes=2, num_leaves=20, other_lim=0.005, random_state=0, verbose=2)
+
+================================================================================
+Best params {'boosting_type': 'gbdt', 'objective': 'binary', 'metric': 'binary_logloss', 'num_leaves': 20, 'learning_rate': 0.05, 'feature_fraction': 0.95, 'bagging_fraction': 0.9, 'bagging_freq': 5, 'num_boost_round': 500, 'early_stopping_rounds': 25, 'verbose': 0}
+Best score 0.61964
+================================================================================
+
+
+Split [1/5]
+Train class 0 | precision 0.4223; recall 0.6075; f1 0.4982
+Train class 1 | precision 0.8813; recall 0.7781; f1 0.8265
+Test class 0 | precision 0.3748; recall 0.5287; f1 0.4386
+Test class 1 | precision 0.8586; recall 0.7644; f1 0.8087
+Xval class 0 | precision 0.3728; recall 0.5392; f1 0.4408
+Xval class 1 | precision 0.8603; recall 0.7578; f1 0.8058
+
+
+Split [2/5]
+Train class 0 | precision 0.4246; recall 0.6169; f1 0.503
+Train class 1 | precision 0.8836; recall 0.7768; f1 0.8268
+Test class 0 | precision 0.3755; recall 0.526; f1 0.4382
+Test class 1 | precision 0.8583; recall 0.7665; f1 0.8098
+Xval class 0 | precision 0.3685; recall 0.5398; f1 0.438
+Xval class 1 | precision 0.8597; recall 0.753; f1 0.8028
+
+
+Split [3/5]
+Train class 0 | precision 0.3934; recall 0.4643; f1 0.4259
+Train class 1 | precision 0.8497; recall 0.8088; f1 0.8288
+Test class 0 | precision 0.3734; recall 0.452; f1 0.409
+Test class 1 | precision 0.845; recall 0.7975; f1 0.8206
+Xval class 0 | precision 0.3599; recall 0.4345; f1 0.3937
+Xval class 1 | precision 0.8402; recall 0.7937; f1 0.8163
+
+
+Split [4/5]
+Train class 0 | precision 0.3943; recall 0.5386; f1 0.4553
+Train class 1 | precision 0.8635; recall 0.7791; f1 0.8191
+Test class 0 | precision 0.3727; recall 0.5156; f1 0.4326
+Test class 1 | precision 0.8559; recall 0.7683; f1 0.8097
+Xval class 0 | precision 0.369; recall 0.5142; f1 0.4296
+Xval class 1 | precision 0.855; recall 0.7652; f1 0.8076
+
+
+Split [5/5]
+Train class 0 | precision 0.3934; recall 0.492; f1 0.4372
+Train class 1 | precision 0.8546; recall 0.7974; f1 0.825
+Test class 0 | precision 0.37; recall 0.4667; f1 0.4128
+Test class 1 | precision 0.8469; recall 0.7878; f1 0.8163
+Xval class 0 | precision 0.3696; recall 0.4608; f1 0.4102
+Xval class 1 | precision 0.8459; recall 0.7902; f1 0.8171
+
+
+================================================================================
+Running time script 228.373 sec
+================================================================================
