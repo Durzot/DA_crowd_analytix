@@ -44,7 +44,7 @@ parser.add_argument('--random_state', type=int, default=0, help='random state fo
 opt = parser.parse_args()
 
 # ========================== NETWORK AND OPTIMIZER ========================== #
-mortgage_data = MortgageData(other_lim=opt.other_lim)
+mortgage_data = MortgageData(other_lim=opt.other_lim, encoder="Hot")
 n_input = mortgage_data.n_input
 n_splits = mortgage_data.n_splits
 
@@ -146,7 +146,7 @@ for index_split in range(n_splits):
     n_batch_test = np.int(np.ceil(len(dataset_test)/opt.batch_size))
 
     # ====================== DEFINE STUFF FOR LOGS ====================== #
-    log_file = os.path.join(path_log, '%s_%s.txt' % model_name)
+    log_file = os.path.join(path_log, '%s.txt' % model_name)
     if not os.path.exists(log_file):
         with open(log_file, 'a') as log:
             log.write(str(opt) + '\n\n')
@@ -154,8 +154,8 @@ for index_split in range(n_splits):
             log.write("train labels %s\n" % np.bincount(dataset_train.y))
             log.write("test labels %s\n\n" % np.bincount(dataset_test.y))
     
-    log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, model_name)
-    log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, model_name)
+    log_train_file = "./log/%s/%s_train.csv" % (opt.model_type, model_name)
+    log_test_file = "./log/%s/%s_test.csv" % (opt.model_type, model_name)
     
     if not os.path.exists(log_train_file): 
         df_logs_train = pd.DataFrame(columns=['model', 'random_state', 'date', 'n_epoch', 'lr', 'crit', 'optim', 'epoch', 
@@ -315,7 +315,7 @@ for index_split in range(n_splits):
         df_logs_test.to_csv(log_test_file, header=True, index=False)
         
         print("Saving net")
-        torch.save(network.state_dict(), os.path.join(path_model, '%s_%s.pth' % model_name))
+        torch.save(network.state_dict(), os.path.join(path_model, '%s.pth' % model_name))
 
     # In here we make record predictions of the trained model on three different datasets
     # 1. On the index_test of X_ttrain i.e the out-of-fold split
@@ -363,7 +363,7 @@ for index_split in range(n_splits):
     index_train, index_test = mortgage_data.splits[index_split]
     df_pred_oof = pd.DataFrame(np.concatenate((index_test.reshape(-1,1), pred.reshape(-1,1), output), axis=1))
     df_pred_oof.columns = ["Index test", "Prediction", "Output 0", "Output 1"]
-    df_pred_oof.to_csv(os.path.join(path_pred, "%s_oof_split_%d.csv" % model_name))
+    df_pred_oof.to_csv(os.path.join(path_pred, "%s_oof.csv" % model_name))
     print("Finished test on oof!\n")
 
     # ====================== TESTING LOOP XVAL ====================== #
@@ -406,7 +406,7 @@ for index_split in range(n_splits):
     index_xval = X_xval.index.values
     df_pred_xval = pd.DataFrame(np.concatenate((index_xval.reshape(-1,1), pred.reshape(-1,1), output), axis=1))
     df_pred_xval.columns = ["Index xval", "Prediction", "Output 0", "Output 1"]
-    df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval_split_%d.csv" % model_name))
+    df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval.csv" % model_name))
     print("Finished test on xval!\n")
 
     # ====================== TESTING LOOP XTEST ====================== #
@@ -430,7 +430,7 @@ for index_split in range(n_splits):
 
     df_pred_xtest = pd.DataFrame(np.concatenate((unique_id, pred, output), axis=1))
     df_pred_xtest.columns = ["Unique_ID", "Prediction", "Output 0", "Output 1"]
-    df_pred_xtest.to_csv(os.path.join(path_pred, "%s_test_split_%d.csv" % model_name))
+    df_pred_xtest.to_csv(os.path.join(path_pred, "%s_test.csv" % model_name))
     print("Finished test on xtest!\n")
 
 
