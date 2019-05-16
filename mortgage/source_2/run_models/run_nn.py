@@ -28,15 +28,16 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', type=int, default=256, help='input batch size')
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
 parser.add_argument('--other_lim', type=float, default=0.005, help='threshold for categories gathering')
-parser.add_argument('--n_epoch', type=int, default=10, help='number of epochs to retrain for')
+parser.add_argument('--n_epoch', type=int, default=50, help='number of epochs to train for on split 0')
+parser.add_argument('--n_epoch_other', type=int, default=10, help='number of epochs to retrain for on other splits')
 parser.add_argument('--dropout_rate', type=float, default=None, help='dropout rate if applicable')
 parser.add_argument('--model_type', type=str, default='MLP_2',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
 parser.add_argument('--criterion', type=str, default='cross_entropy',  help='name of the criterion to use')
 parser.add_argument('--optimizer', type=str, default='adam',  help='name of the optimizer to use')
 parser.add_argument('--lr', type=float, default=0.05,  help='learning rate')
-parser.add_argument('--lr_decay_fact', type=float, default=2,  help='decay factor in learning rate')
-parser.add_argument('--lr_decay_freq', type=int, default=2,  help='decay frequency (in epochs) in learning rate')
+parser.add_argument('--lr_other', type=float, default=0.01,  help='learning rate for other splits')
+parser.add_argument('--lr_decay_fact', type=float, default=0.95,  help='decay factor in learning rate')
 parser.add_argument('--momentum', type=float, default=0,  help='momentum (only SGD)')
 parser.add_argument('--cuda', type=int, default=0, help='set to 1 to use cuda')
 parser.add_argument('--random_state', type=int, default=0, help='random state for split of data')
@@ -175,7 +176,14 @@ for index_split in range(n_splits):
     value_meter_test = AccuracyValueMeter(opt.n_classes) 
 
     # ====================== LEARNING LOOP ====================== #
-    for epoch in range(opt.n_epoch):
+    if index_split == 0:
+        lr = opt.lr
+        n_epoch = opt.n_epoch
+    else:
+        lr = opt.lr_other
+        n_epoch = opt.n_epoch_other
+
+    for epoch in range(n_epoch):
         # TRAINING
         st_time = time.time()
         network.train()
@@ -183,9 +191,9 @@ for index_split in range(n_splits):
         loss_train = 0
     
         # LEARNING RATE SCHEDULE
-        if epoch > 0 and epoch % opt.lr_decay_freq == 0:
-            opt.lr /= opt.lr_decay_fact
-            optimizer = get_optimizer(opt.optimizer, opt.lr, opt.momentum)
+        if epoch > 0:
+            lr *= opt.lr_decay_fact
+            optimizer = get_optimizer(opt.optimizer, lr, opt.momentum)
     
         for batch, (data, label) in enumerate(loader_train):
             data = data.float()
@@ -203,21 +211,21 @@ for index_split in range(n_splits):
             label = label.cpu().data.numpy()
             value_meter_train.update(pred, label, opt.batch_size)
         
-            print('[train epoch %d/%d ; batch: %d/%d] train loss: %.3g' % (epoch+1, opt.n_epoch, batch+1, n_batch_train, loss.item()))
+            print('[train epoch %d/%d ; batch: %d/%d] train loss: %.3g' % (epoch+1, n_epoch, batch+1, n_batch_train, loss.item()))
     
         loss_train = float(loss_train.cpu())/n_batch_train
         dt = time.time()-st_time
         s_time = "%d min %d sec" % (dt//60, dt%60)
         
         print('='*40)
-        print('[train epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_train,
+        print('[train epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, n_epoch, loss_train,
                                                                              value_meter_train.f1_macro, s_time))
         for i in range(opt.n_classes):
             print('cat %d: %s' % (i, value_meter_train.sum[i]))
         print('='*40)
         
         with open(log_file, 'a') as log:
-            log.write('[train epoch %d/%d] | loss %.5g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_train,
+            log.write('[train epoch %d/%d] | loss %.5g | f1_macro %.3g | time %s' % (epoch+1, n_epoch, loss_train,
                                                                                      value_meter_train.f1_macro, s_time) +  '\n')
             for i in range(opt.n_classes):
                 log.write('cat %d: %s' % (i, value_meter_train.sum[i]) + '\n')
@@ -225,7 +233,7 @@ for index_split in range(n_splits):
         row_train = {'model': opt.model_name, 
                      'random_state': opt.random_state,
                      'date': get_time(),
-                     'n_epoch': opt.n_epoch,
+                     'n_epoch': n_epoch,
                      'lr': opt.lr,
                      'crit': opt.criterion,
                      'optim': opt.optimizer,
@@ -271,14 +279,14 @@ for index_split in range(n_splits):
         s_time = "%d min %d sec" % (dt//60, dt%60)
         
         print('='*40)
-        print('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
+        print('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, n_epoch, loss_test,
                                                                             value_meter_test.f1_macro, s_time))
         for i in range(opt.n_classes):
             print('cat %d: %s' % (i, value_meter_test.sum[i]))
         print('='*40)
         
         with open(log_file, 'a') as log:
-            log.write('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, opt.n_epoch, loss_test,
+            log.write('[test epoch %d/%d] | loss %.3g | f1_macro %.3g | time %s' % (epoch+1, n_epoch, loss_test,
                                                                                     value_meter_test.f1_macro, s_time) + '\n')
             for i in range(opt.n_classes):
                 log.write('cat %d: %s' % (i, value_meter_test.sum[i]) + '\n')
@@ -286,7 +294,7 @@ for index_split in range(n_splits):
         row_test = {'model': opt.model_name, 
                     'random_state': opt.random_state,
                     'date': get_time(),
-                    'n_epoch': opt.n_epoch,
+                    'n_epoch': n_epoch,
                     'lr': opt.lr,
                     'crit': opt.criterion,
                     'optim': opt.optimizer,
