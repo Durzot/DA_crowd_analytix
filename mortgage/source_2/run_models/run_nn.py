@@ -99,9 +99,18 @@ if not os.path.exists(log_file_split):
 for index_split in range(n_splits):
     model_name = "%s_%s" % (opt.model_name, index_split+1)
 
-    # Reinitialize the weights
-    network.apply(init_weight)
-    network = network.float()
+    if index_split == 0
+        # Reinitialize the weights
+        network.apply(init_weight)
+        network = network.float()
+    else:
+        model = os.path.join(path_model, '%s_%s.pth' % (opt.model_name, index_split+1))
+        if opt.cuda:
+            network.load_state_dict(torch.load(model))  
+            network.cuda()
+        else:
+            network.load_state_dict(torch.load(model, map_location='cpu'))
+        print("Weights from %s loaded" % model)
 
     # =================== LOAD THE DATA  =================== #
     mortgage_data = MortgageData(other_lim=opt.other_lim, encoder="Hot")
@@ -137,7 +146,7 @@ for index_split in range(n_splits):
     n_batch_test = np.int(np.ceil(len(dataset_test)/opt.batch_size))
 
     # ====================== DEFINE STUFF FOR LOGS ====================== #
-    log_file = os.path.join(path_log, '%s_%s.txt' % (opt.model_name, index_split))
+    log_file = os.path.join(path_log, '%s_%s.txt' % (opt.model_name, index_split+1))
     if not os.path.exists(log_file):
         with open(log_file, 'a') as log:
             log.write(str(opt) + '\n\n')
@@ -145,8 +154,8 @@ for index_split in range(n_splits):
             log.write("train labels %s\n" % np.bincount(dataset_train.y))
             log.write("test labels %s\n\n" % np.bincount(dataset_test.y))
     
-    log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, opt.model_name, index_split)
-    log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, opt.model_name, index_split)
+    log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, opt.model_name, index_split+1)
+    log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, opt.model_name, index_split+1)
     
     if not os.path.exists(log_train_file): 
         df_logs_train = pd.DataFrame(columns=['model', 'random_state', 'date', 'n_epoch', 'lr', 'crit', 'optim', 'epoch', 
@@ -299,7 +308,7 @@ for index_split in range(n_splits):
         df_logs_test.to_csv(log_test_file, header=True, index=False)
         
         print("Saving net")
-        torch.save(network.state_dict(), os.path.join(path_model, '%s_%s.pth' % (opt.model_name, index_split)))
+        torch.save(network.state_dict(), os.path.join(path_model, '%s_%s.pth' % (opt.model_name, index_split+1)))
 
     # In here we make record predictions of the trained model on three different datasets
     # 1. On the index_test of X_ttrain i.e the out-of-fold split

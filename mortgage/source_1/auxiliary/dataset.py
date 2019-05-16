@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-sys.path.append("../source/")
+sys.path.append("../source_1/")
 from auxiliary.utils_data import *
 from sklearn.model_selection import StratifiedKFold
 from sklearn.pipeline import Pipeline

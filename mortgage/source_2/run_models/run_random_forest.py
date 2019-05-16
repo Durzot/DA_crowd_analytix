@@ -27,7 +27,7 @@ from sklearn.externals import joblib
 parser = argparse.ArgumentParser()
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
 parser.add_argument('--other_lim', type=float, default=0.005, help='threshold for categories gathering')
-parser.add_argument('--model_type', type=str, default='RandomForest_2',  help='type of model')
+parser.add_argument('--model_type', type=str, default='RandomForest_3',  help='type of model')
 parser.add_argument('--criterion', type=str, default='gini', help='criterion')
 parser.add_argument('--max_depth', type=int, default=15, help='max_depth')
 parser.add_argument('--max_features', type=str, default='sqrt', help='max_features')
@@ -38,7 +38,7 @@ opt = parser.parse_args()
 st_time = time.time()
 
 # ========================== TRAINING AND TEST DATA ========================== #
-mortgage_data = MortgageData(other_lim=opt.other_lim)
+mortgage_data = MortgageData(other_lim=opt.other_lim, encoder="Hot")
 mortgage_data = mortgage_data.split(resample=False)
 
 # Training set in X_train
@@ -68,8 +68,8 @@ else:
                                        random_state=opt.random_state,
                                        class_weight="balanced")
     
-param_grid = {"n_estimators": [100, 200, 400],
-              "min_samples_split": [5, 20, 60],
+param_grid = {"n_estimators": [400],
+              "min_samples_split": [20],
               "bootstrap": [True, False]}
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #

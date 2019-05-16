@@ -34,9 +34,13 @@ class MortgageData(object):
         
         # Categorical features
         cols_cat = ['amortization', 'mortgage purpose', 'payment frequency', 'property type', 'term', 'age range',
-                   'gender', 'income type', 'naics code']
+                   'gender', 'income type', 'naics code', 'fsa']
         data_train[cols_cat] = data_train[cols_cat].astype('object')
         data_test[cols_cat] = data_test[cols_cat].astype('object')
+
+        # Keep only district information
+        data_train.loc[:,'fsa'] = data_train.fsa.apply(lambda x: x[0])
+        data_test.loc[:,'fsa'] = data_train.fsa.apply(lambda x: x[0])
 
         # Remap label names
         data_train.iloc[:, -1] = data_train.iloc[:, -1].map({"NOT FUNDED": 0, "FUNDED":1})
@@ -51,7 +55,7 @@ class MortgageData(object):
         self.X_test = data_test
 
         # Compartimentalize features
-        cols_ignore = ['unique_id', 'mortgage number', 'fsa']
+        cols_ignore = ['unique_id', 'mortgage number']
         cols_cat = [x for x in self.X_train if self.X_train[x].dtype==object and x not in cols_ignore]
         cols_num = [x for x in self.X_train.columns if x not in cols_cat and x not in cols_ignore]
 
