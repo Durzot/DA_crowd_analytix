@@ -158,7 +158,8 @@ param_grid = {'booster': ['gbtree'],
               'lambda': [0, 1, 10], 
               'alpha': [0, 1, 10], 
               'eval_metric': ['aucpr'], 
-              'objective': ['binary:logistic']}
+              'objective': ['binary:logistic'],
+              'tree_method': ['gpu_hist']}
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #
 path_pred  = "./predictions/%s" % opt.model_type
