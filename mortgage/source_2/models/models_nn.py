@@ -188,7 +188,7 @@ class MLPNet10(nn.Module):
 
 class MLPNet10Drop(nn.Module):
     def __init__(self, n_input, n_classes, p=0.5):
-        super(MLPNet5, self).__init__()
+        super(MLPNet10Drop, self).__init__()
         self.n_classes = n_classes
         self.p = p
         self.drop = nn.Dropout(self.p)
