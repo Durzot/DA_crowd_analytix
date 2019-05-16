@@ -148,14 +148,14 @@ strat_cv = mortgage_data.strat_cv
 
 # ========================== THE MODEL ========================== #
 param_grid = {'booster': ['gbtree'],
-              'min_child_weight': [10, 25, 50], 
+              'min_child_weight': [25], 
               'eta': [opt.eta], 
               'colsample_bytree': [opt.colsample_bytree], 
               'num_boost_round': [200],
               'early_stopping_rounds': [25],
               'max_depth': [opt.max_depth],
               'subsample': [opt.subsample], 
-              'lambda': [0.1, 0.5, 1, 10], 
+              'lambda': [0, 0.5, 1, 10], 
               'alpha': [0, 0.5, 1, 10], 
               'eval_metric': ['aucpr'], 
               'objective': ['binary:logistic']}
