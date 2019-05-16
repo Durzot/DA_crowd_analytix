@@ -32,7 +32,7 @@ parser.add_argument('--other_lim', type=float, default=0.005, help='threshold fo
 parser.add_argument('--model_type', type=str, default='XGB_3',  help='type of model')
 parser.add_argument('--max_depth', type=int, default=10,  help='max_depth')
 parser.add_argument('--eta', type=float, default=0.4,  help='eta')
-parser.add_argument('--colsample_bytree', type=int, default=0.8,  help='colsample_bytree')
+parser.add_argument('--colsample_bytree', type=float, default=0.8,  help='colsample_bytree')
 parser.add_argument('--subsample', type=float, default=0.8,  help='subsample')
 parser.add_argument('--random_state', type=int, default=0, help='random state for the model')
 parser.add_argument('--verbose', type=int, default=2, help='verbose gridsearch')
