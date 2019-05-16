@@ -31,7 +31,7 @@ parser.add_argument('--other_lim', type=float, default=0.005, help='threshold fo
 parser.add_argument('--n_epoch', type=int, default=50, help='number of epochs to train for on split 0')
 parser.add_argument('--n_epoch_other', type=int, default=10, help='number of epochs to retrain for on other splits')
 parser.add_argument('--dropout_rate', type=float, default=None, help='dropout rate if applicable')
-parser.add_argument('--model_type', type=str, default='MLP_2',  help='type of model')
+parser.add_argument('--model_type', type=str, default='MLP_3',  help='type of model')
 parser.add_argument('--model_name', type=str, default='MLPNet3',  help='name of the model for log')
 parser.add_argument('--criterion', type=str, default='cross_entropy',  help='name of the criterion to use')
 parser.add_argument('--optimizer', type=str, default='adam',  help='name of the optimizer to use')
@@ -99,13 +99,12 @@ if not os.path.exists(log_file_split):
 
 for index_split in range(n_splits):
     model_name = "%s_%s" % (opt.model_name, index_split+1)
-
-    if index_split == 0
-        # Reinitialize the weights
+    if index_split == 0:
+        # Initialize the weights
         network.apply(init_weight)
         network = network.float()
     else:
-        model = os.path.join(path_model, '%s_%s.pth' % (opt.model_name, index_split+1))
+        model = os.path.join(path_model, '%s.pth' % model_name)
         if opt.cuda:
             network.load_state_dict(torch.load(model))  
             network.cuda()
@@ -147,7 +146,7 @@ for index_split in range(n_splits):
     n_batch_test = np.int(np.ceil(len(dataset_test)/opt.batch_size))
 
     # ====================== DEFINE STUFF FOR LOGS ====================== #
-    log_file = os.path.join(path_log, '%s_%s.txt' % (opt.model_name, index_split+1))
+    log_file = os.path.join(path_log, '%s_%s.txt' % model_name)
     if not os.path.exists(log_file):
         with open(log_file, 'a') as log:
             log.write(str(opt) + '\n\n')
@@ -155,8 +154,8 @@ for index_split in range(n_splits):
             log.write("train labels %s\n" % np.bincount(dataset_train.y))
             log.write("test labels %s\n\n" % np.bincount(dataset_test.y))
     
-    log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, opt.model_name, index_split+1)
-    log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, opt.model_name, index_split+1)
+    log_train_file = "./log/%s/%s_%s_train.csv" % (opt.model_type, model_name)
+    log_test_file = "./log/%s/%s_%s_test.csv" % (opt.model_type, model_name)
     
     if not os.path.exists(log_train_file): 
         df_logs_train = pd.DataFrame(columns=['model', 'random_state', 'date', 'n_epoch', 'lr', 'crit', 'optim', 'epoch', 
@@ -230,7 +229,7 @@ for index_split in range(n_splits):
             for i in range(opt.n_classes):
                 log.write('cat %d: %s' % (i, value_meter_train.sum[i]) + '\n')
     
-        row_train = {'model': opt.model_name, 
+        row_train = {'model': model_name, 
                      'random_state': opt.random_state,
                      'date': get_time(),
                      'n_epoch': n_epoch,
@@ -291,7 +290,7 @@ for index_split in range(n_splits):
             for i in range(opt.n_classes):
                 log.write('cat %d: %s' % (i, value_meter_test.sum[i]) + '\n')
         
-        row_test = {'model': opt.model_name, 
+        row_test = {'model': model_name, 
                     'random_state': opt.random_state,
                     'date': get_time(),
                     'n_epoch': n_epoch,
@@ -316,7 +315,7 @@ for index_split in range(n_splits):
         df_logs_test.to_csv(log_test_file, header=True, index=False)
         
         print("Saving net")
-        torch.save(network.state_dict(), os.path.join(path_model, '%s_%s.pth' % (opt.model_name, index_split+1)))
+        torch.save(network.state_dict(), os.path.join(path_model, '%s_%s.pth' % model_name))
 
     # In here we make record predictions of the trained model on three different datasets
     # 1. On the index_test of X_ttrain i.e the out-of-fold split
@@ -364,7 +363,7 @@ for index_split in range(n_splits):
     index_train, index_test = mortgage_data.splits[index_split]
     df_pred_oof = pd.DataFrame(np.concatenate((index_test.reshape(-1,1), pred.reshape(-1,1), output), axis=1))
     df_pred_oof.columns = ["Index test", "Prediction", "Output 0", "Output 1"]
-    df_pred_oof.to_csv(os.path.join(path_pred, "%s_oof_split_%d.csv" % (opt.model_name, index_split+1)))
+    df_pred_oof.to_csv(os.path.join(path_pred, "%s_oof_split_%d.csv" % model_name))
     print("Finished test on oof!\n")
 
     # ====================== TESTING LOOP XVAL ====================== #
@@ -407,7 +406,7 @@ for index_split in range(n_splits):
     index_xval = X_xval.index.values
     df_pred_xval = pd.DataFrame(np.concatenate((index_xval.reshape(-1,1), pred.reshape(-1,1), output), axis=1))
     df_pred_xval.columns = ["Index xval", "Prediction", "Output 0", "Output 1"]
-    df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval_split_%d.csv" % (opt.model_name, index_split+1)))
+    df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval_split_%d.csv" % model_name))
     print("Finished test on xval!\n")
 
     # ====================== TESTING LOOP XTEST ====================== #
@@ -431,7 +430,7 @@ for index_split in range(n_splits):
 
     df_pred_xtest = pd.DataFrame(np.concatenate((unique_id, pred, output), axis=1))
     df_pred_xtest.columns = ["Unique_ID", "Prediction", "Output 0", "Output 1"]
-    df_pred_xtest.to_csv(os.path.join(path_pred, "%s_test_split_%d.csv" % (opt.model_name, index_split+1)))
+    df_pred_xtest.to_csv(os.path.join(path_pred, "%s_test_split_%d.csv" % model_name))
     print("Finished test on xtest!\n")
 
 
