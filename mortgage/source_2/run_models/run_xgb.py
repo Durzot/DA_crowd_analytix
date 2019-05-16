@@ -155,8 +155,8 @@ param_grid = {'booster': ['gbtree'],
               'early_stopping_rounds': [25],
               'max_depth': [opt.max_depth],
               'subsample': [opt.subsample], 
-              'lambda': [0, 0.5, 1, 10], 
-              'alpha': [0, 0.5, 1, 10], 
+              'lambda': [0, 1, 10], 
+              'alpha': [0, 1, 10], 
               'eval_metric': ['aucpr'], 
               'objective': ['binary:logistic']}
 
