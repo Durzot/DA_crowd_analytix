@@ -104,7 +104,7 @@ for index_split in range(n_splits):
         network.apply(init_weight)
         network = network.float()
     else:
-        model = os.path.join(path_model, '%s.pth' % model_name)
+        model = os.path.join(path_model, '%s_1.pth' % opt.model_name)
         if opt.cuda:
             network.load_state_dict(torch.load(model))  
             network.cuda()
