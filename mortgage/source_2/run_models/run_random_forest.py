@@ -69,7 +69,7 @@ else:
                                        class_weight="balanced")
     
 param_grid = {"n_estimators": [400],
-              "min_samples_split": [20],
+              "min_samples_split": [2, 10, 25, 50, 100],
               "bootstrap": [True, False]}
 
 # ====================== DEFINE STUFF FOR LOGS ====================== #
