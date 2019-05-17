@@ -23,19 +23,7 @@ from auxiliary.dataset import *
 
 from sklearn.externals import joblib
 from sklearn.metrics import f1_score
-import lightgbm as lgb
-
-param_grid = {'booster': ['gbtree'],
-              'min_child_weight': [50], 
-              'eta': [0.4], 
-              'colsample_bytree': [1.0], 
-              'num_boost_round': [100],
-              'early_stopping_rounds': [25],
-              'max_depth': [10],
-              'subsample': [0.8], 
-              'lambda': [3.], 
-              'eval_metric': ['aucpr'], 
-              'objective': ['binary:logistic']}
+import xgboost as xgb
 
 # =========================== PARAMETERS =========================== # 
 parser = argparse.ArgumentParser()
@@ -43,8 +31,9 @@ parser.add_argument('--n_classes', type=int, default=2, help='number of classes'
 parser.add_argument('--other_lim', type=float, default=0.005, help='threshold for categories gathering')
 parser.add_argument('--model_type', type=str, default='XGB_3',  help='type of model')
 parser.add_argument('--max_depth', type=int, default=10,  help='max_depth')
+parser.add_argument('--eta', type=float, default=0.4,  help='eta')
+parser.add_argument('--colsample_bytree', type=float, default=0.8,  help='colsample_bytree')
 parser.add_argument('--subsample', type=float, default=0.8,  help='subsample')
-parser.add_argument('--min_child_weight', type=int, default=50,  help='min child weight')
 parser.add_argument('--random_state', type=int, default=0, help='random state for the model')
 parser.add_argument('--verbose', type=int, default=2, help='verbose gridsearch')
 opt = parser.parse_args()
@@ -115,11 +104,11 @@ class XGBGridSearch(BaseEstimator, TransformerMixin):
                                     maximize=True, 
                                     verbose_eval=False)
                 
-                y_pred_train = np.where(cxgb.predict(X.iloc[idx_train]) > 0.75, 1, 0)
-                y_pred_test = np.where(cxgb.predict(X.iloc[idx_test]) > 0.75, 1, 0)
+                y_pred_train = np.where(cxgb.predict(dtrain) > 0.75, 1, 0)
+                y_pred_test = np.where(cxgb.predict(dtest) > 0.75, 1, 0)
             
-                score_train = f1_score(lgb_train.get_label(), y_pred_train, average='macro')                
-                score_test = f1_score(lgb_test.get_label(), y_pred_test, average='macro')                
+                score_train = f1_score(y.iloc[idx_train], y_pred_train, average='macro')                
+                score_test = f1_score(y.iloc[idx_test], y_pred_test, average='macro')                
                 scores_train.append(score_train)
                 scores_test.append(score_test)
                 self.cv_results_['split%d_train_score'%i][j] = score_train
@@ -141,7 +130,7 @@ class XGBGridSearch(BaseEstimator, TransformerMixin):
         return self
 
 # ========================== TRAINING AND TEST DATA ========================== #
-mortgage_data = MortgageData(other_lim=opt.other_lim, encoder="Lab")
+mortgage_data = MortgageData(other_lim=opt.other_lim, encoder="Hot")
 mortgage_data = mortgage_data.split(resample=False)
 
 # Training set in X_train
@@ -159,14 +148,15 @@ strat_cv = mortgage_data.strat_cv
 
 # ========================== THE MODEL ========================== #
 param_grid = {'booster': ['gbtree'],
-              'min_child_weight': [50], 
-              'eta': [0.4], 
-              'colsample_bytree': [1.0], 
-              'num_boost_round': [100],
+              'min_child_weight': [25], 
+              'eta': [opt.eta], 
+              'colsample_bytree': [opt.colsample_bytree], 
+              'num_boost_round': [200],
               'early_stopping_rounds': [25],
-              'max_depth': [10],
-              'subsample': [0.8], 
-              'lambda': [3.], 
+              'max_depth': [opt.max_depth],
+              'subsample': [opt.subsample], 
+              'lambda': [0, 1, 10], 
+              'alpha': [0, 1, 10], 
               'eval_metric': ['aucpr'], 
               'objective': ['binary:logistic']}
 
@@ -182,7 +172,7 @@ if not os.path.exists(path_log):
 if not os.path.exists(path_model):
     os.mkdir(path_model)
     
-model_name = "lgb_%s_%s" % (opt.boosting_type, opt.num_leaves)
+model_name = "xgb_eta%s_depth%s_sampletree%s_subsample%s" % (opt.eta, opt.max_depth, opt.colsample_bytree, opt.subsample)
 file_log = os.path.join(path_log, '%s.txt' % (model_name))
 
 # ========================== GRIDSEARCH ========================== #
@@ -218,23 +208,20 @@ with open(file_log, 'a') as log:
         print("Predicting on split [%d/%d] ..." % (i+1, mortgage_data.n_splits))
 
         # Fit the estimator with best parameters on the split
-        lgb_train = lgb.Dataset(X_ttrain.iloc[idx_train], y_train.iloc[idx_train], feature_name='auto', 
-                                categorical_feature=cols_cat, free_raw_data=False)
-        lgb_test = lgb.Dataset(X_ttrain.iloc[idx_test], y_train.iloc[idx_test], feature_name='auto', 
-                               categorical_feature=cols_cat, free_raw_data=False)
+        dtrain = xgb.DMatrix(X_ttrain.iloc[idx_train], y_train.iloc[idx_train])
+        dxval = xgb.DMatrix(X_txval, y_xval)
+        dtest = xgb.DMatrix(X_ttrain.iloc[idx_test], y_train.iloc[idx_test])
 
-        best_estimator = lgb.train(grid.best_params_,
-                                   lgb_train,
-                                   feval=f1_macro_eval,
-                                   valid_sets=[lgb_test],
-                                   valid_names=['test'],
+        best_estimator = xgb.train(grid.best_params_,
+                                   dtrain, 
+                                   evals=[(dtrain, 'train'), (dtest, 'test')],
+                                   maximize=True,
                                    verbose_eval=False)
-
-
+        
         # Evaluate the score and save cr
-        y_pred_train = np.where(best_estimator.predict(X_ttrain.iloc[idx_train]) > 0.75, 1, 0)
-        y_pred_test = np.where(best_estimator.predict(X_ttrain.iloc[idx_test]) > 0.75, 1, 0)
-        y_pred_xval = np.where(best_estimator.predict(X_txval) > 0.75, 1, 0)
+        y_pred_train = np.where(best_estimator.predict(dtrain) > 0.75, 1, 0)
+        y_pred_test = np.where(best_estimator.predict(dtest) > 0.75, 1, 0)
+        y_pred_xval = np.where(best_estimator.predict(dxval) > 0.75, 1, 0)
 
         log.write("\n\nSplit [%d/%d]\n" % (i+1, mortgage_data.n_splits))
         recalls, precisions, f1s = f1_macro(y_pred_train, y_train.iloc[idx_train])
@@ -252,10 +239,9 @@ with open(file_log, 'a') as log:
         
         # Save the estimator on the split
         joblib.dump(best_estimator, os.path.join(path_model, '%s_split_%d.pkl' % (model_name, i+1)))
-        del best_estimator
 
         # Save prediction on out-of-fold split
-        y_pred_test_proba = best_estimator.predict(X_ttrain.iloc[idx_test])
+        y_pred_test_proba = best_estimator.predict(dtest)
         df_pred_test = pd.DataFrame(np.concatenate((idx_test.reshape(-1,1), y_pred_test.reshape(-1,1),
                                                     y_pred_test_proba.reshape(-1, 1)), axis=1))
         df_pred_test.columns = ["Index test", "Prediction", "Proba class 1"]
@@ -266,16 +252,14 @@ with open(file_log, 'a') as log:
 print("Predicting on the test set...")
 
 # Fit the estimator with best parameters on the split
-lgb_train = lgb.Dataset(X_ttrain, y_train, feature_name='auto', 
-                        categorical_feature=cols_cat, free_raw_data=False)
-lgb_xval = lgb.Dataset(X_txval, y_xval, feature_name='auto', 
-                       categorical_feature=cols_cat, free_raw_data=False)
+dtrain = xgb.DMatrix(X_ttrain, y_train)
+dxval = xgb.DMatrix(X_txval, y_xval)
+dtest = xgb.DMatrix(X_ttest)
 
-best_estimator = lgb.train(grid.best_params_,
-                           lgb_train,
-                           feval=f1_macro_eval,
-                           valid_sets=[lgb_xval],
-                           valid_names=['xval'],
+best_estimator = xgb.train(grid.best_params_,
+                           dtrain, 
+                           evals=[(dtrain, 'train'), (dxval, 'xval')],
+                           maximize=True,
                            verbose_eval=False)
 
 # Save the estimator used to predict
@@ -285,16 +269,16 @@ X_test = mortgage_data.X_test
 
 # Save prediction on xval
 index_xval = X_txval.index.values
-y_pred_xval = np.where(best_estimator.predict(X_txval) > 0.75, 1, 0)
-y_pred_xval_proba = best_estimator.predict(X_txval)
+y_pred_xval_proba = best_estimator.predict(dxval)
+y_pred_xval = np.where(y_pred_xval_proba > 0.75, 1, 0)
 df_pred_xval = pd.DataFrame(np.concatenate((index_xval.reshape(-1,1), y_pred_xval.reshape(-1,1),
                                             y_pred_xval_proba.reshape(-1, 1)), axis=1))
 df_pred_xval.columns = ["Index xval", "Prediction", "Proba class 1"]
 df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval.csv" % (model_name)))
 
 # Save prediction on test 
-y_pred_test = np.where(best_estimator.predict(X_ttest) > 0.75, 1 ,0)
-y_pred_test_proba = best_estimator.predict(X_ttest)
+y_pred_test_proba = best_estimator.predict(dtest)
+y_pred_test = np.where(y_pred_test_proba > 0.75, 1 ,0)
 df_pred_test = pd.DataFrame(np.concatenate((X_test.unique_id.values.reshape(-1,1), 
                                             y_pred_test.reshape(-1,1), y_pred_test_proba.reshape(-1,1)), axis=1))
 df_pred_test.columns = ["Unique_ID", "Prediction", "Proba class 1"]

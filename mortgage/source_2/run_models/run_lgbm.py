@@ -29,7 +29,7 @@ import lightgbm as lgb
 parser = argparse.ArgumentParser()
 parser.add_argument('--n_classes', type=int, default=2, help='number of classes')
 parser.add_argument('--other_lim', type=float, default=0.005, help='threshold for categories gathering')
-parser.add_argument('--model_type', type=str, default='LGBM_2',  help='type of model')
+parser.add_argument('--model_type', type=str, default='LGBM_3',  help='type of model')
 parser.add_argument('--boosting_type', type=str, default='gbdt', help='boosting type')
 parser.add_argument('--num_leaves', type=int, default=40, help='num_leaves')
 parser.add_argument('--random_state', type=int, default=0, help='random state for the model')
@@ -239,7 +239,6 @@ with open(file_log, 'a') as log:
         
         # Save the estimator on the split
         joblib.dump(best_estimator, os.path.join(path_model, '%s_split_%d.pkl' % (model_name, i+1)))
-        del best_estimator
 
         # Save prediction on out-of-fold split
         y_pred_test_proba = best_estimator.predict(X_ttrain.iloc[idx_test])
@@ -272,16 +271,16 @@ X_test = mortgage_data.X_test
 
 # Save prediction on xval
 index_xval = X_txval.index.values
-y_pred_xval = np.where(best_estimator.predict(X_txval) > 0.75, 1, 0)
 y_pred_xval_proba = best_estimator.predict(X_txval)
+y_pred_xval = np.where(y_pred_xval_proba, 1, 0)
 df_pred_xval = pd.DataFrame(np.concatenate((index_xval.reshape(-1,1), y_pred_xval.reshape(-1,1),
                                             y_pred_xval_proba.reshape(-1, 1)), axis=1))
 df_pred_xval.columns = ["Index xval", "Prediction", "Proba class 1"]
 df_pred_xval.to_csv(os.path.join(path_pred, "%s_xval.csv" % (model_name)))
 
 # Save prediction on test 
-y_pred_test = np.where(best_estimator.predict(X_ttest) > 0.75, 1 ,0)
 y_pred_test_proba = best_estimator.predict(X_ttest)
+y_pred_test = np.where(y_pred_test_proba, 1 ,0)
 df_pred_test = pd.DataFrame(np.concatenate((X_test.unique_id.values.reshape(-1,1), 
                                             y_pred_test.reshape(-1,1), y_pred_test_proba.reshape(-1,1)), axis=1))
 df_pred_test.columns = ["Unique_ID", "Prediction", "Proba class 1"]
