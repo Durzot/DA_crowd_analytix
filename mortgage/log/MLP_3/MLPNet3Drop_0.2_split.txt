@@ -1,0 +1,41 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, dropout_rate=0.2, lr=0.05, lr_decay_fact=0.95, lr_other=0.01, model_name='MLPNet3Drop_0.2', model_type='MLP_3', momentum=0, n_classes=2, n_epoch=30, n_epoch_other=6, optimizer='adam', other_lim=0.005, random_state=0)
+
+MLPNet3Drop(
+  (fc1): Linear(in_features=72, out_features=16, bias=True)
+  (drop1): Dropout(p=0.2)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (drop2): Dropout(p=0.2)
+  (fc3): Linear(in_features=16, out_features=2, bias=True)
+)
+
+========================================
+OUT-OF_FOLD
+
+
+Split [1/5]
+Test class 0 | precision 0.3141; recall 0.3392; f1 0.3262
+Test class 1 | precision 0.8196; recall 0.8021; f1 0.8108
+
+========================================
+XVAL
+
+
+Split [1/5]
+Test class 0 | precision 0.3107; recall 0.3486; f1 0.3285
+Test class 1 | precision 0.8202; recall 0.7935; f1 0.8066
+
+========================================
+OUT-OF_FOLD
+
+
+Split [2/5]
+Test class 0 | precision 0.3451; recall 0.126; f1 0.1846
+Test class 1 | precision 0.8005; recall 0.9362; f1 0.863
+
+========================================
+XVAL
+
+
+Split [2/5]
+Test class 0 | precision 0.3635; recall 0.1254; f1 0.1865
+Test class 1 | precision 0.8012; recall 0.9413; f1 0.8657

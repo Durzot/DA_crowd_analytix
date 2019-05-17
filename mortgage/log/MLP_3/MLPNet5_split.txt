@@ -1,0 +1,89 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, dropout_rate=None, lr=0.05, lr_decay_fact=0.95, lr_other=0.01, model_name='MLPNet5', model_type='MLP_3', momentum=0, n_classes=2, n_epoch=30, n_epoch_other=6, optimizer='adam', other_lim=0.005, random_state=0)
+
+MLPNet5(
+  (fc1): Linear(in_features=72, out_features=16, bias=True)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (fc3): Linear(in_features=16, out_features=16, bias=True)
+  (fc4): Linear(in_features=16, out_features=16, bias=True)
+  (fc5): Linear(in_features=16, out_features=2, bias=True)
+)
+
+========================================
+OUT-OF_FOLD
+
+
+Split [1/5]
+Test class 0 | precision 0.3253; recall 0.1822; f1 0.2335
+Test class 1 | precision 0.8045; recall 0.8991; f1 0.8492
+
+========================================
+XVAL
+
+
+Split [1/5]
+Test class 0 | precision 0.3349; recall 0.1927; f1 0.2446
+Test class 1 | precision 0.8064; recall 0.8979; f1 0.8497
+
+========================================
+OUT-OF_FOLD
+
+
+Split [2/5]
+Test class 0 | precision 0.3295; recall 0.367; f1 0.3472
+Test class 1 | precision 0.8257; recall 0.8006; f1 0.813
+
+========================================
+XVAL
+
+
+Split [2/5]
+Test class 0 | precision 0.3171; recall 0.3479; f1 0.3318
+Test class 1 | precision 0.8212; recall 0.8; f1 0.8105
+
+========================================
+OUT-OF_FOLD
+
+
+Split [3/5]
+Test class 0 | precision 0.361; recall 0.2422; f1 0.2899
+Test class 1 | precision 0.814; recall 0.8855; f1 0.8483
+
+========================================
+XVAL
+
+
+Split [3/5]
+Test class 0 | precision 0.3358; recall 0.2225; f1 0.2676
+Test class 1 | precision 0.8095; recall 0.8825; f1 0.8444
+
+========================================
+OUT-OF_FOLD
+
+
+Split [4/5]
+Test class 0 | precision 0.3571; recall 0.2294; f1 0.2793
+Test class 1 | precision 0.8122; recall 0.8898; f1 0.8492
+
+========================================
+XVAL
+
+
+Split [4/5]
+Test class 0 | precision 0.3154; recall 0.1906; f1 0.2376
+Test class 1 | precision 0.8045; recall 0.8895; f1 0.8449
+
+========================================
+OUT-OF_FOLD
+
+
+Split [5/5]
+Test class 0 | precision 0.322; recall 0.156; f1 0.2101
+Test class 1 | precision 0.8019; recall 0.9123; f1 0.8535
+
+========================================
+XVAL
+
+
+Split [5/5]
+Test class 0 | precision 0.3497; recall 0.1677; f1 0.2267
+Test class 1 | precision 0.8049; recall 0.9167; f1 0.8572

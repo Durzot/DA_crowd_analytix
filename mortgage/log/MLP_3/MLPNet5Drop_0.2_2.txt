@@ -1,0 +1,52 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, dropout_rate=0.2, lr=0.05, lr_decay_fact=0.95, lr_other=0.01, model_name='MLPNet5Drop_0.2', model_type='MLP_3', momentum=0, n_classes=2, n_epoch=30, n_epoch_other=6, optimizer='adam', other_lim=0.005, random_state=0)
+
+MLPNet5Drop(
+  (fc1): Linear(in_features=72, out_features=16, bias=True)
+  (drop1): Dropout(p=0.2)
+  (fc2): Linear(in_features=16, out_features=16, bias=True)
+  (drop2): Dropout(p=0.2)
+  (fc3): Linear(in_features=16, out_features=16, bias=True)
+  (drop3): Dropout(p=0.2)
+  (fc4): Linear(in_features=16, out_features=16, bias=True)
+  (drop4): Dropout(p=0.2)
+  (fc5): Linear(in_features=16, out_features=2, bias=True)
+)
+train labels [24495 24495]
+test labels [1635 6124]
+
+[train epoch 1/6] | loss 0.53958 | f1_macro 0.723 | time 10 min 2 sec
+cat 0: [14673, 3532]
+cat 1: [9822, 20963]
+[test epoch 1/6] | loss 0.549 | f1_macro 0.484 | time 0 min 22 sec
+cat 0: [87, 158]
+cat 1: [1548, 5966]
+[train epoch 2/6] | loss 0.55934 | f1_macro 0.704 | time 10 min 29 sec
+cat 0: [13067, 2616]
+cat 1: [11428, 21879]
+[test epoch 2/6] | loss 0.583 | f1_macro 0.516 | time 0 min 22 sec
+cat 0: [186, 381]
+cat 1: [1449, 5743]
+[train epoch 3/6] | loss 0.53516 | f1_macro 0.734 | time 10 min 39 sec
+cat 0: [14547, 2828]
+cat 1: [9948, 21667]
+[test epoch 3/6] | loss 0.595 | f1_macro 0.499 | time 0 min 22 sec
+cat 0: [127, 243]
+cat 1: [1508, 5881]
+[train epoch 4/6] | loss 0.52704 | f1_macro 0.738 | time 10 min 21 sec
+cat 0: [15150, 3307]
+cat 1: [9345, 21188]
+[test epoch 4/6] | loss 0.549 | f1_macro 0.517 | time 0 min 22 sec
+cat 0: [201, 451]
+cat 1: [1434, 5673]
+[train epoch 5/6] | loss 0.52483 | f1_macro 0.737 | time 10 min 23 sec
+cat 0: [14728, 2844]
+cat 1: [9767, 21651]
+[test epoch 5/6] | loss 0.593 | f1_macro 0.526 | time 0 min 21 sec
+cat 0: [239, 535]
+cat 1: [1396, 5589]
+[train epoch 6/6] | loss 0.52494 | f1_macro 0.738 | time 8 min 45 sec
+cat 0: [15051, 3170]
+cat 1: [9444, 21325]
+[test epoch 6/6] | loss 0.597 | f1_macro 0.539 | time 0 min 18 sec
+cat 0: [378, 962]
+cat 1: [1257, 5162]

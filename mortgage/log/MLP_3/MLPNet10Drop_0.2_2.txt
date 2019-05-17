@@ -1,0 +1,54 @@
+Namespace(batch_size=256, criterion='cross_entropy', cuda=1, dropout_rate=0.2, lr=0.05, lr_decay_fact=0.95, lr_other=0.01, model_name='MLPNet10Drop_0.2', model_type='MLP_3', momentum=0, n_classes=2, n_epoch=30, n_epoch_other=6, optimizer='adam', other_lim=0.005, random_state=0)
+
+MLPNet10Drop(
+  (drop): Dropout(p=0.2)
+  (fc1): Linear(in_features=72, out_features=32, bias=True)
+  (fc2): Linear(in_features=32, out_features=32, bias=True)
+  (fc3): Linear(in_features=32, out_features=32, bias=True)
+  (fc4): Linear(in_features=32, out_features=32, bias=True)
+  (fc5): Linear(in_features=32, out_features=16, bias=True)
+  (fc6): Linear(in_features=16, out_features=16, bias=True)
+  (fc7): Linear(in_features=16, out_features=16, bias=True)
+  (fc8): Linear(in_features=16, out_features=16, bias=True)
+  (fc9): Linear(in_features=16, out_features=16, bias=True)
+  (fc10): Linear(in_features=16, out_features=2, bias=True)
+)
+train labels [24495 24495]
+test labels [1635 6124]
+
+[train epoch 1/6] | loss 0.69373 | f1_macro 0.5 | time 10 min 27 sec
+cat 0: [12343, 12327]
+cat 1: [12152, 12168]
+[test epoch 1/6] | loss 0.719 | f1_macro 0.174 | time 0 min 20 sec
+cat 0: [1635, 6124]
+cat 1: [0, 0]
+[train epoch 2/6] | loss 0.694 | f1_macro 0.5 | time 10 min 42 sec
+cat 0: [12796, 12804]
+cat 1: [11699, 11691]
+[test epoch 2/6] | loss 0.646 | f1_macro 0.441 | time 0 min 20 sec
+cat 0: [0, 0]
+cat 1: [1635, 6124]
+[train epoch 3/6] | loss 0.69406 | f1_macro 0.501 | time 10 min 29 sec
+cat 0: [12842, 12758]
+cat 1: [11653, 11737]
+[test epoch 3/6] | loss 0.673 | f1_macro 0.441 | time 0 min 20 sec
+cat 0: [0, 0]
+cat 1: [1635, 6124]
+[train epoch 4/6] | loss 0.69377 | f1_macro 0.502 | time 10 min 38 sec
+cat 0: [12468, 12364]
+cat 1: [12027, 12131]
+[test epoch 4/6] | loss 0.685 | f1_macro 0.441 | time 0 min 20 sec
+cat 0: [0, 0]
+cat 1: [1635, 6124]
+[train epoch 5/6] | loss 0.69377 | f1_macro 0.5 | time 9 min 20 sec
+cat 0: [13239, 13223]
+cat 1: [11256, 11272]
+[test epoch 5/6] | loss 0.727 | f1_macro 0.174 | time 0 min 17 sec
+cat 0: [1635, 6124]
+cat 1: [0, 0]
+[train epoch 6/6] | loss 0.69424 | f1_macro 0.499 | time 9 min 28 sec
+cat 0: [12558, 12624]
+cat 1: [11937, 11871]
+[test epoch 6/6] | loss 0.719 | f1_macro 0.174 | time 0 min 19 sec
+cat 0: [1635, 6124]
+cat 1: [0, 0]
